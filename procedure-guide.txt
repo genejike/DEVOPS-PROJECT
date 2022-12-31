@@ -1,0 +1,10 @@
+installing windows terminal
+installing vscode and vs extensions
+CREATING FOLDER WORKSPACE
+install git 
+install open ssh server
+create an instance in AWS
+SSH INTO THE INSTANCE
+BRIEF INTRO OF MARK DOWN FOR DOCUMENTATION
+SIMPLE GIT COMMANDS TO PUSH OUR DOCUMENTATION TO GITHUB
+
