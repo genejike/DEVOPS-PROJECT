@@ -94,7 +94,7 @@
 
 `ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'PassWord.1'; `
 
-### Exist mysql
+### Exit mysql
 `exit `
 
 
