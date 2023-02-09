@@ -256,41 +256,86 @@ Verify that your Logical Volume has been created successfully by running
 
 sudo `lsblk `
 
-Use mkfs.ext4 to format the logical volumes with ext4 filesystem
+
+Create /db directory to store database files
 
 `sudo mkdir /db`
 
+Use mkfs.ext4 to format the logical volumes with ext4 filesystem
+
 `sudo mkfs.ext4 /dev/vg-database/db-lv`
+mount the /dev/vg-database/db-l on the /db 
 
-![Alt text](images/db-mount.png)
+`sudo mount /dev/vg-database/db-lv /db`
 
+![Alt text](images/db-mount.png)`
 
+use the `df-h` to check the mounts
+### update the /etc/fstab file
+The UUID of the device will be used to update the /etc/fstab file;
+use this command to get the UUID `sudo blikd`
+
+![Alt text](images/db-blkid.png)
+
+`sudo vi /etc/fstab`
+
+![Alt text](images/db-etc-fstab.png)
+
+Test the configuration and reload the daemon
+`sudo mount -a`
+
+`sudo systemctl daemon-reload`
+
+![Alt text](images/db-daemonreload.png)
+
+use df-h to verify setup;
 
 ### Step 3 — Install WordPress on your Web Server EC2
 Update the repository
 
 `sudo yum -y update`
- 
-Install wget, Apache and it’s dependencies
+
+
+To install PHP and its depemdencies
+check the current php version and update it to the latest version
+
+`sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm`
+
+`sudo dnf install dnf-utils http://rpms.remirepo.net/enterprise/remi-release-8.rpm`
+
+ `sudo dnf module list php`
+ `sudo dnf install php php-opcache php-gd php-curl php-mysqlnd`
+`php -v`
+
+start and enable the php page 
+
+`sudo systemctl start php-fpm`
+`sudo systemctl enable php-fpm`
+
+check the status of the php
+
+`sudo systemctl status php-fpm`
+
+`sudo systemctl restart httpd`
+`sudo setsebool -P httpd_execmem `
+
+
+
  
 `sudo yum -y install wget httpd php php-mysqlnd php-fpm php-json`
 
 Start Apache
+
 `sudo systemctl enable httpd`
+
 `sudo systemctl start httpd`
- 
-To install PHP and its depemdencies
+
+`sudo systemctl status httpd`
+
+![Alt text](images/apache-restartdb.png)
  
 
-    sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-    sudo yum install yum-utils http://rpms.remirepo.net/enterprise/remi-release-8.rpm
-    sudo yum module list php
-    sudo yum module reset php
-    sudo yum module enable php:remi-7.4
-    sudo yum install php php-opcache php-gd php-curl php-mysqlnd
-    sudo systemctl start php-fpm
-    sudo systemctl enable php-fpm
-    sudo setsebool -P httpd_execmem 1 
+ 
 
 Restart Apache
 
@@ -298,21 +343,39 @@ Restart Apache
  
 Download wordpress and copy wordpress to var/www/html
  
-    mkdir wordpress
-    cd   wordpress
+`mkdir wordpress`
+`cd   wordpress`
+
+Install wget, Apache and it’s dependencies
+install wget
+`sudo yum install wget`
+
+![Alt text](images/install-wgetweb.png)
+
     sudo wget http://wordpress.org/latest.tar.gz
     sudo tar xzvf latest.tar.gz
     sudo rm -rf latest.tar.gz
     sudo cp wordpress/wp-config-sample.php wordpress/wp-config.php
     sudo cp -R wordpress /var/www/html/
  
-Configure SELinux Policies
- 
-       sudo chown -R apache:apache /var/www/html/wordpress
-       sudo chcon -t httpd_sys_rw_content_t /var/www/html/wordpress -R
-       sudo setsebool -P httpd_can_network_connect=1
-	   sudo setsebool -P httpd_can_network_connect_db 1
 
+ open this file in var/www/html folder
+
+ `sudo vi wp-config.php`
+
+![Alt text](images/vi-wp-config-php.png)
+ 
+
+ ![Alt text](images/wp-config.php.png)
+
+ Edit the DB_NAME and DB_USER and DB_PASSWORD and DB_HOST as inputed and created in your database server
+Remember to restart the apache after changing the file
+ `sudo systemctl restart httpd`
+
+install my sql-server on var/www/html directory
+ `sudo yum install mysql-server`
+  `sudo systemctl start mysqld`
+ ` sudo systemctl enable mysqld`
 ### Step 4 — Install MySQL on your DB Server EC2
 
 
@@ -339,6 +402,17 @@ Verify that the service is up and running by using sudo systemctl status mysqld,
     exit
 
 ### Step 6 — Configure WordPress to connect to the remote database.
+
+Configure SELinux Policies
+ 
+       sudo chown -R apache:apache /var/www/html/wordpress
+       sudo chcon -t httpd_sys_rw_content_t /var/www/html/wordpress -R
+       sudo setsebool -P httpd_can_network_connect=1
+	   sudo setsebool -P httpd_can_network_connect_db 1
+
+![Alt text](images/sepolicieswordpress.png)   
+
+
 Hint: Do not forget to open MySQL port 3306 on DB Server EC2. For extra security, you shall allow access to the DB server ONLY from your Web Server’s IP address, so in the Inbound Rule configuration specify source as /32
 
 ![Alt text](images/inbound%20rules.png)
@@ -348,5 +422,10 @@ Hint: Do not forget to open MySQL port 3306 on DB Server EC2. For extra security
 
 
 
+![Alt text](images/wordpress1.png)
+![Alt text](images/wordpress2.png)
+![Alt text](images/wordpress3.png)
+![Alt text](images/wordpress4.png)
+![Alt text](images/final.png)
 
-
+https://www.youtube.com/watch?v=fJnjuG-CK4g
