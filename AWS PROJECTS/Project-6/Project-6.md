@@ -62,15 +62,31 @@ Use`df -h` command to see all mounts and free space on your server
 
 Use `gdisk` utility to create a single partition on each of the 3 disks
 
-![Alt text](images/gdisk.png)
+`sudo gdisk /dev/xvdf`
+
+For the partition number click 1 then for the first sector and last sector because we are using the whole space we click enter
+then because we are using lvm we change to the partition type 8E00
+
+
+![Alt text](images/gdisk-new.png)
 
 ![Alt text](images/gdisk1.png)
+
+repeat this steps for
+
+`sudo gdisk /dev/xvdg`
+
+and
+
+`sudo gdisk /dev/xvdh`
 
 Use `lsblk` utility to view the newly configured partition on each of the 3 disks.
 
 ![Alt text](images/lsblk2.png)
 
-Install lvm2 package using `sudo yum install lvm2`. 
+Install lvm2 package using
+
+`sudo yum install lvm2`. 
 
 ![Alt text](images/lvm%20install.png)
 
@@ -179,6 +195,76 @@ Verify your setup by running `df -h`, output must look like this:
 ### Step 2 — Prepare the Database Server
 Launch a second RedHat EC2 instance that will have a role – ‘DB Server’
 Repeat the same steps as for the Web Server, but instead of `apps-lv` create `db-lv` and mount it to `/db` directory instead of `/var/www/html/`.
+![Alt text](images/AWS%20setup.png)
+
+Attach all three volumes one by one to your Wdatabase server EC2 instance
+
+![Alt text](images/attachvolume.png)
+
+Use lsblk command to inspect what block devices are attached to the server. 
+![Alt text](images/lsblk-db.png)
+
+Use `df -h` command to see all mounts and free space on your server
+
+![Alt text](images/gdisk-db.png)
+
+repeat for all disk partition
+
+![Alt text](images/db-disk%20partition.png)
+
+Install lvm2 package using 
+
+`sudo yum install lvm2`
+
+![Alt text](images/db-lvm%20install.png)
+
+
+Run `sudo lvmdiskscan` command to check for available partitions.
+
+Use pvcreate utility to mark each of 3 disks as physical volumes (PVs) to be used by LVM
+
+`sudo pvcreate /dev/xvdf1`
+`sudo pvcreate /dev/xvdg1`
+`sudo pvcreate /dev/xvdh1`
+
+Verify that your Physical volume has been created successfully by running 
+
+`sudo pvs`
+
+Use vgcreate utility to add all 3 PVs to a volume group (VG). Name the VG vg-database
+
+`sudo vgcreate vg-database /dev/xvdh1 /dev/xvdg1 /dev/xvdf1`
+
+Verify that your VG has been created successfully by running 
+
+`sudo vgs`
+
+![Alt text](images/db-lvcreate.png)
+
+Use `lvcreate` utility to create a logical volumes.
+
+`sudo lvcreate -n db-lv -L 20G vg-database`
+![Alt text](images/db-create.png)
+
+Verify that your Logical Volume has been created successfully by running
+
+`sudo lvs`
+
+`sudo vgdisplay -v` 
+
+#view complete setup - VG, PV, and LV
+
+sudo `lsblk `
+
+Use mkfs.ext4 to format the logical volumes with ext4 filesystem
+
+`sudo mkdir /db`
+
+`sudo mkfs.ext4 /dev/vg-database/db-lv`
+
+![Alt text](images/db-mount.png)
+
+
 
 ### Step 3 — Install WordPress on your Web Server EC2
 Update the repository

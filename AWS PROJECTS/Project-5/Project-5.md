@@ -76,7 +76,7 @@ To exit the sql
 
 `mysql> exit`
 
-To test if this user has proper logging ability
+To test if this user has proper log in ability
 
 `mysql-u userwe -p`
 
@@ -87,7 +87,7 @@ confirm that you have access to the TestDB1 database:
 
 ![Alt text](images/ShowDB.png)
 
-You might need to configure MySQL server to allow connections from remote hosts.
+You need to configure MySQL server to allow connections from remote hosts.
 
 `sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf`
 
