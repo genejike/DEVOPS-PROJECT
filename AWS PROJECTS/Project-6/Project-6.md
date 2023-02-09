@@ -392,6 +392,11 @@ Verify that the service is up and running by using sudo systemctl status mysqld,
 
 ![Alt text](images/createdb.png)
 
+`sudo mysql_secure_installation`
+
+` sudo mysql -u root -p`
+
+![Alt text](images/mysql.png)
 ### Step 5 — Configure DB to work with WordPress
     sudo mysql
     CREATE DATABASE wordpress;
@@ -401,6 +406,7 @@ Verify that the service is up and running by using sudo systemctl status mysqld,
     SHOW DATABASES;
     exit
 
+![Alt text](images/sql.png)
 ### Step 6 — Configure WordPress to connect to the remote database.
 
 Configure SELinux Policies
