@@ -11,7 +11,7 @@ we are going to do this in 2 parts :
 
 2.Install WordPress and connect it to a remote MySQL database server. This part of the project will solidify your skills of deploying Web and DB tiers of Web solution.
 
-Three-tier Architecture is a client-server software architecture pattern that comprise of 3 separate layers.
+### Three-tier Architecture is a client-server software architecture pattern that comprise of 3 separate layers.
 
 Presentation Layer (PL): This is the user interface such as the client server or browser on your laptop.
 
@@ -23,7 +23,9 @@ Data Access or Management Layer (DAL): This is the layer for computer data stora
 Your 3-Tier Setup
 
 1.A Laptop or PC to serve as a client
+
 2.An EC2 Linux Server as a web server (This is where you will install WordPress)
+
 3.An EC2 Linux server as a database (DB) server
    
 In this project we are using REDHAT OSinstead of ubuntu
