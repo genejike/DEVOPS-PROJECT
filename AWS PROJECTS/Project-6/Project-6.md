@@ -43,9 +43,12 @@ Launch an EC2 instance that will serve as "Web Server".
 Create 3 volumes in the same AZ as your Web Server EC2, each of 10 GiB.
 
 ![Alt text](images/select-volume.png)
-click on create volume and the drop down will show.make show to select 10 GiB and the availability zone should be the same as your web server Then click create
+	
+click on create volume and the drop down will show.
+make show to select 10 GiB and the availability zone should be the same as your web server Then click create
 
 ![Alt text](images/volume%20create.png)
+	
 
 After creating attach to your webserver 
 
