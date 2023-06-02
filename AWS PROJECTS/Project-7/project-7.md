@@ -81,6 +81,7 @@ sudo vgcreate nfsdata-vg /dev/xvdh1 /dev/xvdg1 /dev/xvdf1
 Verify that your VG has been created successfully by running
 
 `sudo vgs`
+![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/eaa2aa19-8376-4153-9e03-bb5b59f97dab)
 
 Use lvcreate utility to create 3 Logical Volumes. 
 lv-opt lv-apps, and lv-logs
@@ -97,6 +98,8 @@ Verify that your Logical Volume has been created successfully by running
 Verify the entire setup
 
 `sudo vgdisplay -v #view complete setup - VG, PV, and LV `
+![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/f2eb0507-633c-460a-b28d-3c4d1e8ee3a8)
+
 
 ` sudo lsblk `
 
@@ -179,6 +182,9 @@ sudo systemctl enable nfs-server.service
 sudo systemctl status nfs-server.service
 
 ```
+![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/e185cf8d-566d-4c7b-9960-0f05cce3d854)
+
+
 
 Export the mounts for webservers’ subnet CIDR to connect as clients.
 For simplicity, you will install all three Web Servers inside the same subnet, but in the production set-up, you would probably want to separate each tier inside its own subnet for a higher level of security.
@@ -212,12 +218,17 @@ Esc + :wq!
 sudo exportfs -arv
 
 ```
+![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/d315a9ba-015f-4c7d-9f32-f1942491ebde)
 
 Check which port is used by NFS and open it using Security Groups (add new Inbound Rule)
 ```
 rpcinfo -p | grep nfs
 ```
+![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/ec3fe7c1-77e1-48c2-beac-3dbaebe3a3fe)
+
 Important note: In order for NFS server to be accessible from your client, you must also open following ports: TCP 111, UDP 111, UDP 2049
+![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/e6af110e-fc45-4c41-9f36-b7807e64f123)
+
 
 
 STEP 2 — CONFIGURE THE DATABASE SERVER
