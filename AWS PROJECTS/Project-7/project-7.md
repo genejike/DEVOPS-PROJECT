@@ -23,6 +23,15 @@ Spin up a new EC2 instance with RHEL Linux 8 Operating System.
 
 Configure LVM on the Server.
 
+Create 3 volumes in the same AZ as your Web Server EC2, each of 10 GiB.
+
+After creating attach to your NFSserver.refer to project 6 to see how 
+
+Do this for all 3 volumes
+
+use lsblk to see what blocked device are attached on the server 
+
+and df-h to see the mounted volumes and free space 
 
 
 ![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/c8ea2a21-dbd5-4533-a664-647460b01d22)
