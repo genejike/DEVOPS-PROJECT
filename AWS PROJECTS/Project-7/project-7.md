@@ -36,10 +36,77 @@ and df-h to see the mounted volumes and free space
 
 ![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/c8ea2a21-dbd5-4533-a664-647460b01d22)
 
-Instead of formatting the disks as ext4, you will have to format them as xfs
+Use gdisk utility to create a single partition on each of the 3 disks
+```
+sudo gdisk /dev/xvdf
+```
+```
+sudo gdisk /dev/xvdh
+```
+```
+sudo gdisk /dev/xvdg
 
-Ensure there are 3 Logical Volumes. lv-opt lv-apps, and lv-logs
+```
 
+For the partition number click 1
+then for the first sector and last sector  hit enter 
+because we are using the whole space we click enter 
+then because we are using lvm we change to the partition type 8E00
+
+
+Use lsblk utility to view the newly configured partition on each of the 3 disks.
+
+Install lvm2 package using
+
+```
+sudo yum install lvm2.
+```
+
+Run `sudo lvmdiskscan` command to check for available partitions.
+
+
+Use pvcreate utility to mark each of 3 disks as physical volumes (PVs) to be used by LVM
+```
+sudo pvcreate /dev/xvdf1 
+sudo pvcreate /dev/xvdg1 
+sudo pvcreate /dev/xvdh1
+
+```
+use`sudo pvs` to see the physical volumes created 
+
+Use vgcreate utility to add all 3 PVs to a volume group (VG). Name the VG nfsdata-vg
+
+sudo vgcreate nfsdata-vg /dev/xvdh1 /dev/xvdg1 /dev/xvdf1
+
+Verify that your VG has been created successfully by running
+
+`sudo vgs`
+
+Use lvcreate utility to create 3 Logical Volumes. 
+lv-opt lv-apps, and lv-logs
+```
+
+sudo lvcreate -n lv-apps -L 9G nfsdata-vg 
+sudo lvcreate -n lv-logs -L 10G nfsdata-vg
+sudo lvcreate -n lv-opt -L 9G nfsdata-vg
+```
+Verify that your Logical Volume has been created successfully by running
+
+`sudo lvs`
+
+Verify the entire setup
+
+`sudo vgdisplay -v #view complete setup - VG, PV, and LV `
+
+` sudo lsblk `
+
+Use mkfs.xfs to format the logical volumes with xfs filesystem
+```
+sudo mkfs -t xfs /dev/nfsdata-vg/lv-apps 
+sudo mkfs -t xfs /dev/nfsdata-vg/lv-logs
+sudo mkfs -t xfs /dev/nfsdata-vg/lv-opt 
+
+```
 Create mount points on /mnt directory for the logical volumes as follow:
 
 Mount lv-apps on /mnt/apps – To be used by webservers
@@ -49,15 +116,68 @@ Mount lv-logs on /mnt/logs – To be used by webserver logs
 Mount lv-opt on /mnt/opt – To be used by Jenkins server in Project 8
 
 
+Create /mnt/apps directory to store website files
+
+```
+sudo mkdir -p /mnt/apps
+sudo mkdir -p /mnt/logs
+sudo mkdir -p /mnt/opt
 
 
-Install NFS server, configure it to start on reboot and make sure it is u and running
+```
+Mount /mnt/apps on lv-apps logical volume
+
+```
+sudo mount /dev/nfsdata-vg/lv-apps /mnt/apps
+
+```
+Use rsync utility to back up all the files in the log directory /var/log into /mnt/logs (This is required before mounting the file system)
+```
+sudo rsync -av /mnt/logs/. /var/log
+```
+
+
+Mount /mnt/log on lv-logs logical volume. (Note that all the existing data on /mnt/log will be deleted.)
+
+```
+sudo mount /dev/nfsdata-vg/lv-logs /mnt/logs
+
+```
+Restore log files back into /mnt/log directory
+```
+sudo rsync -av /mnt/logs/. /var/log
+```
+
+UPDATE THE /ETC/FSTAB FILE
+```
+sudo blkid 
+
+```
+```
+sudo vi /etc/fstab
+
+```
+
+and insert the uuid for the 3 nfsdata-vg created 
+
+Test the configuration and reload the daemon
+
+```
+sudo mount -a
+sudo systemctl daemon-reload
+
+```
+
+
+Install NFS server, configure it to start on reboot and make sure it is up and running
+
 ```
 sudo yum -y update
 sudo yum install nfs-utils -y
 sudo systemctl start nfs-server.service
 sudo systemctl enable nfs-server.service
 sudo systemctl status nfs-server.service
+
 ```
 
 Export the mounts for webservers’ subnet CIDR to connect as clients.
