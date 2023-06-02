@@ -23,6 +23,10 @@ Spin up a new EC2 instance with RHEL Linux 8 Operating System.
 
 Configure LVM on the Server.
 
+
+
+![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/c8ea2a21-dbd5-4533-a664-647460b01d22)
+
 Instead of formatting the disks as ext4, you will have to format them as xfs
 
 Ensure there are 3 Logical Volumes. lv-opt lv-apps, and lv-logs
