@@ -248,22 +248,29 @@ Upgrade ubuntu
 `sudo apt upgrade -y`
 
  Install MySQL Server
+
 `sudo apt install mysql-server -y`
 
 Start server
+
 `sudo systemctl enable mysql`
 
 Check the status to ensure it is running
+
 `sudo systemctl status mysql`
 
- First, open up the MySQL prompt:
+First, open up the MySQL prompt:
+
 `sudo mysql`
 
 Change the root user’s authentication method to one that uses a password.
+
 `ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';`
 
 exit the MySQL prompt:
+
 `exit`
+
 run
 
 `sudo mysql_secure_installation`
