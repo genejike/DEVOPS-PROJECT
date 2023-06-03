@@ -239,29 +239,38 @@ By now you should know how to install and configure a MySQL DBMS to work with re
 
 Install MySQL server
 
-# Update ubuntu
-sudo apt update
-# Upgrade ubuntu 
-sudo apt upgrade -y
+ Update ubuntu
+ 
+`sudo apt update`
 
-# Install MySQL Server
-sudo apt install mysql-server -y
-# Start server
-sudo systemctl enable mysql
-# Check the status to ensure it is running
-sudo systemctl status mysql
+Upgrade ubuntu 
 
-# First, open up the MySQL prompt:
-sudo mysql
-# Change the root user’s authentication method to one that uses a password.
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
-# exit the MySQL prompt:
-exit
+`sudo apt upgrade -y`
 
-sudo mysql_secure_installation
+ Install MySQL Server
+`sudo apt install mysql-server -y`
 
-# Login to MySQL
-sudo mysql -u root -p
+Start server
+`sudo systemctl enable mysql`
+
+Check the status to ensure it is running
+`sudo systemctl status mysql`
+
+ First, open up the MySQL prompt:
+`sudo mysql`
+
+Change the root user’s authentication method to one that uses a password.
+`ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';`
+
+exit the MySQL prompt:
+`exit`
+run
+
+`sudo mysql_secure_installation`
+
+ Login to MySQL
+ 
+`sudo mysql -u root -p`
 
 
 Create a database and name it tooling
@@ -273,7 +282,7 @@ create database tooling;
 
 Create a database user and name it webaccess
 
-# Create new user
+Create new user
 CREATE USER 'webaccess'@'%' IDENTIFIED WITH mysql_native_password BY 'Password@123';
 
 Grant permission to webaccess user on tooling database to do anything only from the webservers subnet cidr
@@ -284,6 +293,8 @@ GRANT ALL PRIVILEGES ON tooling.* TO 'webaccess'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
 ```
+![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/b16bb620-8641-4e24-b098-718e63de580e)
+
 
 Step 3 — Prepare the Web Servers
 
