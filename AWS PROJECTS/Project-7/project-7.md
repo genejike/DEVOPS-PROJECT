@@ -15,8 +15,8 @@ On the diagram below you can see a common pattern where several stateless Web Se
 It is important to know what storage solution is suitable for what use cases, for this – you need to answer the following questions: what data will be stored, in what format, how this data will be accessed, by whom, from where, how frequently, etc. Based on this you will be able to choose the right storage system for your solution.
  
 
-STEP 1 – PREPARE NFS SERVER
-Step 1 – Prepare NFS Server
+# STEP 1 – PREPARE NFS SERVER
+
 
 Spin up a new EC2 instance with RHEL Linux 8 Operating System.
 ![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/857e32a5-f215-4368-9d8e-4d230ab8beb4)
@@ -72,11 +72,12 @@ sudo pvcreate /dev/xvdg1
 sudo pvcreate /dev/xvdh1
 
 ```
-use`sudo pvs` to see the physical volumes created 
+use `sudo pvs` to see the physical volumes created 
 
 Use vgcreate utility to add all 3 PVs to a volume group (VG). Name the VG nfsdata-vg
-
+```
 sudo vgcreate nfsdata-vg /dev/xvdh1 /dev/xvdg1 /dev/xvdf1
+```
 
 Verify that your VG has been created successfully by running
 
@@ -87,8 +88,9 @@ lv-opt lv-apps, and lv-logs
 ```
 
 sudo lvcreate -n lv-apps -L 9G nfsdata-vg 
-sudo lvcreate -n lv-logs -L 10G nfsdata-vg
+sudo lvcreate -n lv-logs -L 9G nfsdata-vg
 sudo lvcreate -n lv-opt -L 9G nfsdata-vg
+
 ```
 Verify that your Logical Volume has been created successfully by running
 
@@ -197,7 +199,7 @@ sudo chmod -R 777 /mnt/opt
  
 sudo systemctl restart nfs-server.service
 ```
-Configure access to NFS for clients within the same subnet (example of Subnet CIDR – 172.31.32.0/20 ):
+Configure access to NFS for clients within the same subnet (example of Subnet CIDR – 172.31.80.0/20):
 
 ```
 sudo vi /etc/exports
@@ -226,11 +228,51 @@ By now you should know how to install and configure a MySQL DBMS to work with re
 
 Install MySQL server
 
+# Update ubuntu
+sudo apt update
+# Upgrade ubuntu 
+sudo apt upgrade -y
+
+# Install MySQL Server
+sudo apt install mysql-server -y
+# Start server
+sudo systemctl enable mysql
+# Check the status to ensure it is running
+sudo systemctl status mysql
+
+# First, open up the MySQL prompt:
+sudo mysql
+# Change the root user’s authentication method to one that uses a password.
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+# exit the MySQL prompt:
+exit
+
+sudo mysql_secure_installation
+
+# Login to MySQL
+sudo mysql -u root -p
+
+
 Create a database and name it tooling
+
+```
+create database tooling;
+
+```
 
 Create a database user and name it webaccess
 
+# Create new user
+CREATE USER 'webaccess'@'%' IDENTIFIED WITH mysql_native_password BY 'Password@123';
+
 Grant permission to webaccess user on tooling database to do anything only from the webservers subnet cidr
+
+```
+GRANT ALL PRIVILEGES ON tooling.* TO 'webaccess'@'%' WITH GRANT OPTION;
+
+FLUSH PRIVILEGES;
+
+```
 
 Step 3 — Prepare the Web Servers
 
