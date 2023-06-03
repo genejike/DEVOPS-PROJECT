@@ -299,8 +299,15 @@ GRANT ALL PRIVILEGES ON tooling.* TO 'webaccess'@'%' WITH GRANT OPTION;
 
 FLUSH PRIVILEGES;
 
+
 ```
 ![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/b16bb620-8641-4e24-b098-718e63de580e)
+
+configure MySQL server to allow connections from remote hosts. To do this, open the MySQL config file and replace 127.0.0.1’ to ‘0.0.0.0’ in the “binding-address”
+
+`sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf`
+
+![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/f78d28b6-4fe9-49a5-9596-1a046f00b5f8)
 
 
 Step 3 — Prepare the Web Servers
