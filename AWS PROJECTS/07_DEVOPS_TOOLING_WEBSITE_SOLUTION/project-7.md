@@ -309,6 +309,9 @@ configure MySQL server to allow connections from remote hosts. To do this, open 
 
 ![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/f78d28b6-4fe9-49a5-9596-1a046f00b5f8)
 
+restart my sql 
+
+`sudo systemctl restart mysql`
 
 Step 3 — Prepare the Web Servers
 
