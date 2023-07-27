@@ -237,7 +237,7 @@ Important note: In order for NFS server to be accessible from your client, you m
 
 
 
-STEP 2 — CONFIGURE THE DATABASE SERVER
+### STEP 2 — CONFIGURE THE DATABASE SERVER
 
 By now you should know how to install and configure a MySQL DBMS to work with remote Web Server
 
@@ -275,7 +275,7 @@ exit the MySQL prompt:
 
 `exit`
 
-run
+run if u want to set up secure installation
 
 `sudo mysql_secure_installation`
 
@@ -308,17 +308,10 @@ FLUSH PRIVILEGES;
 ```
 ![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/b16bb620-8641-4e24-b098-718e63de580e)
 
-configure MySQL server to allow connections from remote hosts. To do this, open the MySQL config file and replace 127.0.0.1’ to ‘0.0.0.0’ in the “binding-address”
-
-`sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf`
-
-![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/f78d28b6-4fe9-49a5-9596-1a046f00b5f8)
-
-restart my sql 
 
 `sudo systemctl restart mysql`
 
-Step 3 — Prepare the Web Servers
+### Step 3 — Prepare the Web Servers
 
 We need to make sure that our Web Servers can serve the same content from shared storage solutions, in our case – NFS Server and MySQL database.
 
@@ -328,22 +321,25 @@ This approach will make our Web Servers stateless, which means we will be able t
 
 During the next steps we will do following:
 
-Configure NFS client (this step must be done on all three servers)
+1.Configure NFS client (this step must be done on all three servers)
 
-Deploy a Tooling application to our Web Servers into a shared NFS folder
+2.Deploy a Tooling application to our Web Servers into a shared NFS folder
 
-Configure the Web Servers to work with a single MySQL database
+3.Configure the Web Servers to work with a single MySQL database
+
+
 Launch a new EC2 instance with RHEL 8 Operating System
 Install NFS client
 
-```
-sudo yum install nfs-utils nfs4-acl-tools -y
-Mount /var/www/ and target the NFS server’s export for apps
-sudo mkdir /var/www
-sudo mount -t nfs -o rw,nosuid <NFS-Server-Private-IP-Address>:/mnt/apps /var/www
+`sudo yum install nfs-utils nfs4-acl-tools -y`
 
-```
-Verify that NFS was mounted successfully by running` df -h`. 
+Mount /var/www/ and target the NFS server’s export for apps
+
+`sudo mkdir /var/www`
+
+`sudo mount -t nfs -o rw,nosuid <NFS-Server-Private-IP-Address>:/mnt/apps /var/www`
+
+Verify that NFS was mounted successfully by running `df -h`. 
 
 Make sure that the changes will persist on Web Server after reboot:
 
@@ -374,18 +370,21 @@ sudo systemctl start php-fpm
  
 sudo systemctl enable php-fpm
  
-setsebool -P httpd_execmem 1
+sudo setsebool -P httpd_execmem 1
 
 ```
+
 Repeat steps 1-5 for another 2 Web Servers.
+
 Verify that Apache files and directories are available on the Web Server in /var/www and also on the NFS server in /mnt/apps.
 
 
 If you see the same files – it means NFS is mounted correctly. You can try to create a new file touch test.txt from one server and check if the same file is accessible from other Web Servers.
+
 Locate the log folder for Apache on the Web Server and mount it to NFS server’s export for logs. Repeat step №4 to make sure the mount point will persist after reboot.
 
 
-Fork the tooling source code from Darey.io Github Account to your Github account. (Learn how to fork a repo here)
+Fork the tooling source code from ...
 
 
 Deploy the tooling website’s code to the Webserver. Ensure that the html folder from the repository is deployed to /var/www/html
@@ -395,8 +394,11 @@ Note 1: Do not forget to open TCP port 80 on the Web Server.
 
 
 Note 2: If you encounter 403 Error – check permissions to your /var/www/html folder and also disable SELinux sudo setenforce 0
-To make this change permanent – open following config file sudo vi /etc/sysconfig/selinux and set SELINUX=disabledthen restrt httpd.
-a
+
+To make this change permanent – open following config file 
+`sudo vi /etc/sysconfig/selinux `and set `SELINUX=disabled`
+then restrt httpd.
+
 
 
 Update the website’s configuration to connect to the database (in /var/www/html/functions.php file). Apply tooling-db.sql script to your database using this command
