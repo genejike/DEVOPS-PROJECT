@@ -306,7 +306,8 @@ FLUSH PRIVILEGES;
 
 
 ```
-![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/b16bb620-8641-4e24-b098-718e63de580e)
+
+<img width="482" alt="change on tooling" src="https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/1c3f61ce-a7e7-4a76-a731-34a612e09af3">
 
 
 `sudo systemctl restart mysql`
