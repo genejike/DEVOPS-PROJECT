@@ -232,7 +232,7 @@ rpcinfo -p | grep nfs
 ```
 ![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/ec3fe7c1-77e1-48c2-beac-3dbaebe3a3fe)
 
-Important note: In order for NFS server to be accessible from your client, you must also open following ports: TCP 111, UDP 111, UDP 2049
+Important note: In order for NFS server to be accessible from your client, you must also open following ports: TCP 111, UDP 111, UDP 2049,TCP 2049
 ![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/e6af110e-fc45-4c41-9f36-b7807e64f123)
 
 
@@ -293,8 +293,9 @@ create database tooling;
 
 Create a database user and name it webaccess
 
-Create new user
-CREATE USER 'webaccess'@'%' IDENTIFIED WITH mysql_native_password BY 'Password@123';
+Create new user and replace % with the ipv4 cidr for webserver
+
+`CREATE USER 'webaccess'@'%' IDENTIFIED WITH mysql_native_password BY 'Password@123';`
 
 Grant permission to webaccess user on tooling database to do anything only from the webservers subnet cidr
 
