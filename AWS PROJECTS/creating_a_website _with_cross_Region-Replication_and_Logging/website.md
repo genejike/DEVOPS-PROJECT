@@ -1,13 +1,13 @@
-create a new s3 bucket named ..... in us east ohio region
+* create a new s3 bucket named ..... in us east ohio region
 
-enable versioning for the bucket 
+* enable versioning for the bucket 
 
-enable website hosting for the bucket 
-configure index.html as the index document 
+* enable website hosting for the bucket 
+* configure index.html as the index document 
 
-create a bucket policy to allow public access to the website
+* create a bucket policy to allow public access to the website
 
-cofigure the lab bucket to logwrites to the lab web 
+* configure the lab bucket to logwrites to the lab web 
 
 create a new buck named lab web in the us west oregon region
 
