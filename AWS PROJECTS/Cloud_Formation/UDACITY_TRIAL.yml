@@ -6,7 +6,7 @@ Description: Mary's VPC template
 
 # Add Resources Here: uncomment the following lines
 Resources:
-   Mary_VPC:
+   MaryVPC:
      Type: 'AWS::EC2::VPC'
 #     # <add resource-specific properties underneath this entry  - available properties are listed in code completion>
      Properties:
@@ -14,4 +14,4 @@ Resources:
       EnableDnsHostnames: 'true'
       Tags:
       - Key: name
-        Value: myfirsttestvpc
+        Value: mytestvpc
