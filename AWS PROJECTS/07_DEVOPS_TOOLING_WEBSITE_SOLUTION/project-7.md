@@ -373,7 +373,8 @@ sudo setsebool -P httpd_execmem 1
 Repeat steps 1-5 for another 2 Web Servers.
 
 1.Verify that Apache files and directories are available on the Web Server in /var/www and also on the NFS server in /mnt/apps.
-
+![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/dc93acab-c45f-4269-aa49-d0f92ee8725b)
+     ![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/4b1b8b86-fc73-4798-b0ed-51bb318a2905)
 2.If you see the same files – it means NFS is mounted correctly. You can try to create a new file touch test.txt in the /var/www path from one server and check if the same file is accessible from other Web Servers.
 
 3.Locate the log folder for Apache on the Web Server and mount it to NFS server’s export for logs. 
