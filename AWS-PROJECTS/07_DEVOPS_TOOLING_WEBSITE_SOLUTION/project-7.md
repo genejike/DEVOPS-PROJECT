@@ -411,6 +411,7 @@ sudo vi /etc/sysconfig/selinux
 ```
 and 
 - set `SELINUX=disabled`then restart httpd.
+  
 -Update the website’s configuration to connect to the database (in /var/www/html/functions.php file). Apply tooling-db.sql script to your database using this command
 ```sh
 mysql -h <databse-private-ip> -u <db-username> -p <db-pasword> < tooling-db.sql
@@ -421,6 +422,8 @@ INSERT INTO ‘users’ (‘id’, ‘username’, ‘password’, ’email’, 
 -> (1, ‘myuser’, ‘5f4dcc3b5aa765d61d8327deb882cf99’, ‘user@mail.com’, ‘admin’, ‘1’);
 ```
 * Open the website in your browser http://<Web-Server-Public-IP-Address-or-Public-DNS-Name>/index.php and make sure you can login into the website with myuser user.
+
+![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/2788edda-dbfa-4cb4-933c-c8fe25aaa245)
 
 
 
