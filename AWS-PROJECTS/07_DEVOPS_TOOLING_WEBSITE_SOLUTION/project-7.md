@@ -412,9 +412,13 @@ sudo vi /etc/sysconfig/selinux
 and 
 - set `SELINUX=disabled`then restart httpd.
   
--Update the website’s configuration to connect to the database (in /var/www/html/functions.php file). Apply tooling-db.sql script to your database using this command
+-Update the website’s configuration to connect to the database (in /var/www/html/functions.php file).
+
+![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/7464e43d-f99c-429a-aa7a-1fc698a105e1)
+
+Apply tooling-db.sql script to your database using this command
 ```sh
-mysql -h <databse-private-ip> -u <db-username> -p <db-pasword> < tooling-db.sql
+mysql -h <databse-private-ip> -u <db-username> -p <db-name> < tooling-db.sql
 ```
 * Create in MySQL a new admin user with username: myuser and password: password:
 ```sh
