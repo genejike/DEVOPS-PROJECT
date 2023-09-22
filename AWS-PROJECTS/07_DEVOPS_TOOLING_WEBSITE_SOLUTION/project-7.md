@@ -416,10 +416,28 @@ and
 
 ![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/7464e43d-f99c-429a-aa7a-1fc698a105e1)
 
+* install my sql client
+  ```
+  sudo yum install mysql
+  ```
 Apply tooling-db.sql script to your database using this command
+```
+cd tooling
+```
 ```sh
 mysql -h <databse-private-ip> -u <db-username> -p <db-name> < tooling-db.sql
 ```
+confirm if this worked by logining to your database with the username created 
+`mysql -u webaccess4 -p`
+
+```
+use tooling;
+show tables;
+select * from users;
+
+```
+* click exit 
+* login as the root user 
 * Create in MySQL a new admin user with username: myuser and password: password:
 ```sh
 INSERT INTO ‘users’ (‘id’, ‘username’, ‘password’, ’email’, ‘user_type’, ‘status’) VALUES
@@ -429,7 +447,8 @@ INSERT INTO ‘users’ (‘id’, ‘username’, ‘password’, ’email’, 
 
 ![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/2788edda-dbfa-4cb4-933c-c8fe25aaa245)
 
-![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/a03c6d31-3b7e-495f-9ee8-052f3b4fa086)
+![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/7add422a-4126-4390-ab38-4d517801f101)
+
 
 
 
