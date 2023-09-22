@@ -428,8 +428,18 @@ cd tooling
 ```sh
 mysql -h <databse-private-ip> -u <db-username> -p <db-name> < tooling-db.sql
 ```
+if it does not work check out the bind address on the database  server buy running 
+
+```
+ sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf
+```
+edit the  2 bind address to the ip address or cidr block of the web servers
+id be using 0.0.0.0 for simplicity but for security reasons limit it 
+
+![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/ad65ca96-b000-4914-8f3f-4a732019ffb1)
+
 confirm if this worked by logining to your database with the username created 
-`mysql -u webaccess4 -p`
+`sudo mysql -u webaccess4 -p`
 
 ```
 use tooling;
