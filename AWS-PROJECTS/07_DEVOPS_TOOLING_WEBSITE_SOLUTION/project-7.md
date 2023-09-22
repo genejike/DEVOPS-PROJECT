@@ -1,7 +1,8 @@
 ### DEVOPS TOOLING WEBSITE SOLUTION
  
-##### Technologies specification
+##### Technology specification
 
+- cloud: AWS
 - Webserver Linux: Red Hat Enterprise Linux 8
 
 - Database Server: Ubuntu 20.04 + MySQL
