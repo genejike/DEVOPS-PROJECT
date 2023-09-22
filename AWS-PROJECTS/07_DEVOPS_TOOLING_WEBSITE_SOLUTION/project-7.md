@@ -425,5 +425,8 @@ INSERT INTO ‘users’ (‘id’, ‘username’, ‘password’, ’email’, 
 
 ![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/2788edda-dbfa-4cb4-933c-c8fe25aaa245)
 
+![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/a03c6d31-3b7e-495f-9ee8-052f3b4fa086)
+
+
 
 
