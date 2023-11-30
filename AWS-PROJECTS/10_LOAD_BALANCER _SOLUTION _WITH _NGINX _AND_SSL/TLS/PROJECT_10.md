@@ -1,6 +1,6 @@
-#### LOAD BALANCER SOLUTION WITH NGINX AND SSL/TLS
+## LOAD BALANCER SOLUTION WITH NGINX AND SSL/TLS
 In this project you will register your website with LetsEnrcypt Certificate Authority, to automate certificate issuance you will use a shell client recommended by LetsEncrypt – cetrbot.
-### Task
+#### Task
 This project consists of two parts:
 - Configure Nginx as a Load Balancer
 - Register a new domain name and configure secured connection using SSL/TLS certificates
@@ -57,7 +57,7 @@ sudo systemctl status nginx
 
 * Read more about HTTP load balancing methods and features supported by Nginx on this [page](https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/)
 
-## REGISTER A NEW DOMAIN NAME AND CONFIGURE SECURED CONNECTION USING SSL/TLS CERTIFICATES
+#### REGISTER A NEW DOMAIN NAME AND CONFIGURE SECURED CONNECTION USING SSL/TLS CERTIFICATES
 Let us make necessary configurations to make connections to our Tooling Web Solution secured!
 In order to get a valid SSL certificate – you need to register a new domain name, you can do it using any Domain name registrar – I am using namecheap.com 
 * Register a new domain name with any registrar of your choice in any domain zone (e.g. .com, .net, .org, .edu, .info, .xyz or any other)
