@@ -140,6 +140,8 @@ In your ansible-config-mgt GitHub repository, create a new branch that will be u
 
 **Note**: Ansible uses TCP port 22 by default, which means it needs to ssh into target servers from Jenkins-Ansible host – for this you can implement the concept of ssh-agent. Now you need to import your key into ssh-agent:
 
+[UNDERSTANDING SSH_AGENT](https://smallstep.com/blog/ssh-agent-explained/)
+
 - To learn how to setup SSH agent and connect VS Code to your Jenkins-Ansible instance, please see this video:
 
 1. For Windows users – [ssh-agent on windows](https://youtu.be/OplGrY74qog)
@@ -154,12 +156,13 @@ In your ansible-config-mgt GitHub repository, create a new branch that will be u
 - click ctrl+shift+p
 - search ssh and select open ssh configuration 
 - then select the first file and add to the config file 
-- i added forwarding agent yes but it is advised not to do that 
+- i added forwarding agent yes but it is advised not to do that , only use agent forwarding in circumstances where you need it. ssh -A turns on agent forwarding for a single session
 ![Alt text](image-6.png)
 
 ```sh
 eval `ssh-agent -s`
 ssh-add <path-to-private-key>
+
 ```
 - Confirm the key has been added with the command below, you should see the name of your key
 ```
@@ -169,8 +172,9 @@ ssh-add -l
 
 Now, ssh into your Jenkins-Ansible server using ssh-agent
 ```sh 
-ssh -A ubuntu@public-ip
+ssh -A ubuntu@<publicipofjenkinsinstance>
 ```
+- you can also check if it works by ssh into other servers from your jenkins file 
 
 Also notice, that your Load Balancer user is ubuntu and user for RHEL-based servers is ec2-user.
 
@@ -227,12 +231,14 @@ Update your playbooks/common.yml file with following code:
 ```
 - Examine the code above and try to make sense out of it. This playbook is divided into two parts, each of them is intended to perform the same task:
  
-- install wireshark utility (or make sure it is updated to the latest version) on your RHEL 8 and Ubuntu servers. It uses root user to perform this task and respective package manager: yum for RHEL 8 and apt for Ubuntu.
+1. install wireshark utility (or make sure it is updated to the latest version) on your RHEL 8 and Ubuntu servers. It uses root user to perform this task and respective package manager: yum for RHEL 8 and apt for Ubuntu.
 
-- Feel free to update this playbook with following tasks:
-Create a directory and a file inside it
-Change timezone on all servers
-Run some shell script
+Feel free to update this playbook with following tasks:
+- Create a directory and a file inside it
+- Change timezone on all servers
+- Run some shell script
+
+![Alt text](image-8.png)
 
 
 #### Step 6 – Update GIT with the latest code
@@ -246,9 +252,6 @@ git commit -m "commit message"
 
 Create a Pull request (PR)
 
-
-
-
 - Head back on your terminal, checkout from the feature branch into the master, and pull down the latest changes.
 Once your code changes appear in master branch – Jenkins will do its job and save all the files (build artifacts) to /var/lib/jenkins/jobs/ansible/builds/<build_number>/archive/ directory on Jenkins-Ansible server.
 
@@ -257,12 +260,22 @@ Once your code changes appear in master branch – Jenkins will do its job and s
 #### RUN FIRST ANSIBLE TEST
 #### Step 7 – Run first Ansible test
 Now, it is time to execute ansible-playbook command and verify if your playbook actually works:
-- cd ansible-config-mgtansible-playbook -i inventory/dev.yml playbooks/common.yml
+
+```sh
+cd /var/lib/jenkins/jobs/ansible_practice/builds/1/archive
+
+ansible-playbook -i inventory/dev.yml playbooks/common.yml
+```
+
 You can go to each of the servers and check if wireshark has been installed by running which wireshark or wireshark --version
+![Alt text](image-9.png)
+
+- while running this you might encounter the screenshot below ensure to type yes since this is the first time it is running subsequently it wunt pop up again 
+![Alt text](image-10.png)
 
 Your updated with Ansible architecture now looks like this:
+![Alt text](image-11.png)
 
-- Optional step – Repeat once again
-Update your ansible playbook with some new Ansible tasks and go through the full checkout -> change codes -> commit -> PR -> merge -> build -> ansible-playbook cycle again to see how easily you can manage a servers fleet of any size with just one command!
 
+Resources:
 [git flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
