@@ -79,6 +79,7 @@ The code above uses built in import_playbook Ansible module. Your folder structu
 
 
 - Run ansible-playbook command against the dev environment Since you need to apply some tasks to your dev servers and wireshark is already installed – you can go ahead and create another playbook under static-assignments and name it common-del.yml. In this playbook, configure deletion of wireshark utility.
+```yml
 ---
 - name: update web and nfs server
   hosts: webservers, nfs
@@ -104,7 +105,8 @@ The code above uses built in import_playbook Ansible module. Your folder structu
       autoremove: yes
       purge: yes
       autoclean: yes
-update site.yml with - import_playbook: ../static-assignments/common-del.yml instead of common.yml and run it against dev servers:
+```
+- update site.yml with - import_playbook: ../static-assignments/common-del.yml instead of common.yml and run it against dev servers:
 ```sh
 cd /var/lib/jenkins/workspace/save_artifacts/home/ubuntu/ansible-config-artifact
 
