@@ -6,7 +6,7 @@
 On the diagram below the Virtual Private Network (VPC) is divided into two subnets – Public subnet has public IP addresses and Private subnet is only reachable by private IP addresses.
 
 
-![Alt text](image-1.png)
+![Alt text](images/image-1.png)
 
 
 
@@ -32,13 +32,13 @@ sudo apt install ansible
 
 * Check your Ansible version by running ansible --version
 
-![Alt text](image.png)
+![Alt text](images/image.png)
 
 * Configure Jenkins build job to save your repository content every time you change it – this will solidify your Jenkins configuration skills .
 
 * Create a new Freestyle project ansible in Jenkins and point it to your ‘ansible-config-mgt’ repository.
 
-![Alt text](image-2.png)
+![Alt text](images/image-2.png)
 
 * when creating credentials github does not support password authentication anymore for private git repositories  so i used personal access token [video for private  repository connection](https://www.youtube.com/watch?v=AYohbnOqox0) but if it is public just provide the url, theres no need for authentication [video for public repository](https://www.youtube.com/watch?v=bWcWbMtMK24)
 #### Steps for setting up a personal access token 
@@ -104,7 +104,7 @@ ls /var/lib/jenkins/jobs/ansible/builds/<build_number>/archive/
 
 Note: Trigger Jenkins project execution only for /main (master) branch.
 Now your setup will look like this:
-![Alt text](image-3.png)
+![Alt text](images/image-3.png)
 
 Tip:
  Every time you stop/start your Jenkins-Ansible server – you have to reconfigure GitHub webhook to a new IP address, in order to avoid it, it makes sense to allocate an Elastic IP to your Jenkins-Ansible server (you have done it before to your LB server in Project 10). Note that Elastic IP is free only when it is being allocated to an EC2 Instance, so do not forget to release Elastic IP once you terminate your EC2 Instance.
@@ -132,7 +132,7 @@ In your ansible-config-mgt GitHub repository, create a new branch that will be u
 - Create a directory and name it inventory – it will be used to keep your hosts organised.
 - Within the playbooks folder, create your first playbook, and name it common.yml
 - Within the inventory folder, create an inventory file (.yml) for each environment (Development,  Staging Testing and Production) dev, staging, uat, and prod respectively.
-![Alt text](image-4.png)
+![Alt text](images/image-4.png)
 
 #### Step 4 – Set up an Ansible Inventory
 - An Ansible inventory file defines the hosts and groups of hosts upon which commands, modules, and tasks in a playbook operate. Since our intention is to execute Linux commands on remote hosts, and ensure that it is the intended configuration on a particular server that occurs. It is important to have a way to organize our hosts in such an Inventory.
@@ -157,7 +157,7 @@ In your ansible-config-mgt GitHub repository, create a new branch that will be u
 - search ssh and select open ssh configuration 
 - then select the first file and add to the config file 
 - i added forwarding agent yes but it is advised not to do that , only use agent forwarding in circumstances where you need it. ssh -A turns on agent forwarding for a single session
-![Alt text](image-6.png)
+![Alt text](images/image-6.png)
 
 ```sh
 eval `ssh-agent -s`
@@ -168,7 +168,7 @@ ssh-add <path-to-private-key>
 ```
 ssh-add -l
 ```
-![Alt text](image-5.png)
+![Alt text](images/image-5.png)
 
 Now, ssh into your Jenkins-Ansible server using ssh-agent
 ```sh 
@@ -238,7 +238,7 @@ Feel free to update this playbook with following tasks:
 - Change timezone on all servers
 - Run some shell script
 
-![Alt text](image-8.png)
+![Alt text](images/image-8.png)
 
 
 #### Step 6 – Update GIT with the latest code
@@ -268,13 +268,13 @@ ansible-playbook -i inventory/dev.yml playbooks/common.yml
 ```
 
 You can go to each of the servers and check if wireshark has been installed by running which wireshark or wireshark --version
-![Alt text](image-9.png)
+![Alt text](images/image-9.png)
 
 - while running this you might encounter the screenshot below ensure to type yes since this is the first time it is running subsequently it wunt pop up again 
-![Alt text](image-10.png)
+![Alt text](images/image-10.png)
 
 Your updated with Ansible architecture now looks like this:
-![Alt text](image-11.png)
+![Alt text](images/image-11.png)
 
 
 Resources:

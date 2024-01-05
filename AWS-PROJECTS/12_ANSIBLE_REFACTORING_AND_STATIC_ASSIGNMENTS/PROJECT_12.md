@@ -21,18 +21,18 @@ chmod -R 0777 /home/ubuntu/ansible-config-artifact
 ```
 3. Go to Jenkins web console -> Manage Jenkins -> Manage Plugins -> on Available tab search for Copy Artifact and install this plugin without restarting Jenkins
 
-![Alt text](image.png)
+![Alt text](images/image.png)
 
 - Create a new Freestyle project and name it save_artifacts.
 
 - This project will be triggered by completion of your existing ansible project. Configure it accordingly:
-![Alt text](image-1.png)
+![Alt text](images/image-1.png)
 
 - Note: You can configure number of builds to keep in order to save space on the server, for example, you might want to keep only last 2 or 5 build results. You can also make this change to your ansible job.
-![Alt text](image-2.png)
+![Alt text](images/image-2.png)
 
 - The main idea of save_artifacts project is to save artifacts into `/home/ubuntu/ansible-config-artifact` directory. To achieve this, create a Build step and choose Copy artifacts from other project, specify ansible as a source project and `/home/ubuntu/ansible-config-artifact` as a target directory.
-![Alt text](image-3.png)
+![Alt text](images/image-3.png)
 
 
 - Test your set up by making some change in README.MD file inside your ansible-config-mgt repository (right inside master branch).
@@ -113,7 +113,7 @@ cd /var/lib/jenkins/workspace/save_artifacts/home/ubuntu/ansible-config-artifact
 ansible-playbook -i inventory/dev.yml playbooks/site.yml
 ```
 
-![Alt text](image-4.png)
+![Alt text](images/image-4.png)
 
 - Make sure that wireshark is deleted on all the servers by running wireshark --version
 
@@ -185,7 +185,7 @@ then run
 scp -i <"Name-of-keypair-used-to-ssh-into-the-instance"> <Name-of-kepair-that-you-want-to-copy> <username@public-IP:><path-to-copy-to/>
 
 ```
-![Alt text](image-5.png)
+![Alt text](images/image-5.png)
 i had permission issues here when coping to that folder so i copied into `/home/ubuntu `directory and moved the key pair file into `/var/lib/jenkins/workspace/save_artifacts/home/ubuntu/ansible-config-artifact`
 
 In /etc/ansible/ansible.cfg file uncomment roles_path string and provide a full path to your roles directory roles_path = /home/ubuntu/ansible-config-mgt/roles, so Ansible could know where to find configured roles.
@@ -275,15 +275,15 @@ cd /var/lib/jenkins/workspace/save_artifacts/home/ubuntu/ansible-config-artifact
 sudo ansible-playbook -i inventory/uat.yml playbooks/site.yml
 ```
 
-![Alt text](image-6.png)
+![Alt text](images/image-6.png)
 
 - You should be able to see both of your UAT Web servers configured and you can try to reach them from your browser:
 
 http://<Web1-UAT-Server-Public-IP-or-Public-DNS-Name>/index.php
-![Alt text](image-7.png)
+![Alt text](images/image-7.png)
 
 Your Ansible architecture now looks like this:
 
-![Alt text](image-8.png)
+![Alt text](images/image-8.png)
 
 Congratulations! You have learned how to deploy and configure UAT Web Servers using Ansible imports and roles!

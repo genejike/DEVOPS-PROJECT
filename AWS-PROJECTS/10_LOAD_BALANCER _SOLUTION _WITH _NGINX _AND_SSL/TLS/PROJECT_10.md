@@ -97,8 +97,8 @@ or using ROUTE53
 ```sh
 sudo vi /etc/nginx/nginx.conf
 ```
-![Alt text](image.png)
-
+![Alt text](images/image-12.png)
+!
 ####  Install certbot and request for an SSL/TLS certificate
 * Make sure snapd service is active and running
 ```sh
@@ -115,7 +115,7 @@ sudo snap install --classic certbot
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 sudo certbot --nginx
 ```
-![Alt text](image-1.png)
+![Alt text](images/image-9.png)
 
 * Test secured access to your Web Solution by trying to reach https://<your-domain-name.com>
 
@@ -132,7 +132,7 @@ sudo certbot --nginx
 ```sh
 sudo certbot renew --dry-run
 ```
-![Alt text](image-2.png)
+![Alt text](images/image-10.png)
 * Best pracice is to have a scheduled job that to run renew command periodically. Let us configure a cronjob to run the command twice a day.
 * To do so, lets edit the crontab file with the following command:
 ```sh
@@ -143,7 +143,7 @@ Add following line:
 ```
 * */12 * * *   root /usr/bin/certbot renew > /dev/null 2>&1
 ```
-![Alt text](image-3.png)
+![Alt text](images/image-11.png)
 - You can always change the interval of this cronjob if twice a day is too often by adjusting schedule expression.
 
 - Side Self Study: [Refresh your cron configuration knowledge ](https://crontab.guru/examples.html)
