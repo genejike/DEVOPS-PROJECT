@@ -5,9 +5,10 @@ In this project we will introduce dynamic assignments by using include module.
 Static assignments use import Ansible module. The module that enables dynamic assignments is include.
 
 Hence,
-
+```
 import = Static 
 include = Dynamic
+```
 
 When the import module is used, all statements are pre-processed at the time playbooks are parsed. Meaning, when you execute site.yml playbook, Ansible will process all the playbooks referenced during the time it is parsing the statements. This also means that, during actual execution, if any statement changes, such statements will not be considered. Hence, it is static. 
 On the other hand, when include module is used, all statements are processed only during execution of the playbook. Meaning, after the statements are parsed, any changes to the statements encountered during execution will be used.
@@ -37,8 +38,7 @@ Your GitHub shall have following structure.
 └── static-assignments
     └── common.yml
 ```
-  
-![mkdir dynamic](https://user-images.githubusercontent.com/110903886/221908307-a8d5fea3-e6c4-46ca-a45f-6dc9b4497c54.png)
+  ![Alt text](images/image.png)
 
 Since we will be using the same Ansible to configure multiple environments, and each of these environments will have certain unique attributes, such as servername, ip-address etc., we will need a way to set values to variables per specific environment.
 For this reason, we will now create a folder to keep each environment’s variables file. Therefore, create a new folder `env-vars`, then for each environment, create new YAML files which we will use to set variables.
@@ -64,11 +64,11 @@ Your layout should now look like this.
     └── webservers.yml
 ```  
 
-![mkdir env](https://user-images.githubusercontent.com/110903886/221907464-9c477ac7-5996-4217-8674-a554b829f226.png)
+
 
 Now paste the instruction below into the `env-vars.yml` file.
 
-```  
+``` yml 
 ---
 - name: collate variables from env specific file, if it exists
   hosts: all
@@ -108,7 +108,7 @@ In the same version, variants of import were also introduces, such as:
 Update `site.yml` file to make use of the dynamic assignment. (At this point, we cannot test it yet. We are just setting the stage for what is yet to come. So hang on to your hats)
 `site.yml` should now look like this.
 
-```
+```yml
 ---
 - hosts: all
 - name: Include dynamic variables 
@@ -123,9 +123,10 @@ Update `site.yml` file to make use of the dynamic assignment. (At this point, we
   import_playbook: ../static-assignments/webservers.yml
 ```
 
+
 ## Community Roles
 
-Now it is time to create a role for MySQL database – it should install the MySQL package, create a database and configure users. But why should we re-invent the wheel? There are tons of roles that have already been developed by other open source engineers out there. These roles are actually production ready, and dynamic to accomodate most of Linux flavours. With Ansible Galaxy again, we can simply download a ready to use ansible role, and keep going.
+- Now it is time to create a role for MySQL database – it should install the MySQL package, create a database and configure users. But why should we re-invent the wheel? There are tons of roles that have already been developed by other open source engineers out there. These roles are actually production ready, and dynamic to accomodate most of Linux flavours. With Ansible Galaxy again, we can simply download a ready to use ansible role, and keep going.
 
 ## Download MySQL Ansible Role
 
@@ -142,10 +143,11 @@ git branch roles-feature
 git switch roles-feature
 ```
 
-![git init](https://user-images.githubusercontent.com/110903886/221911924-e15d8aec-3e8f-4f2e-8032-7cbb11dc3109.png)
+
 
 
 Inside roles directory create your new MySQL role with `ansible-galaxy install -p . geerlingguy.mysql` and rename the folder to mysql using `mv geerlingguy.mysql/ mysql`
+![Alt text](images/image-3.png)
 
 Read README.md file, and edit roles configuration to use correct credentials for MySQL required for the tooling website.
 Now it is time to upload the changes into your GitHub:
@@ -177,7 +179,7 @@ We want to be able to choose which Load Balancer to use, Nginx or Apache, so we 
 
 loadbalancers.yml file
 
-```
+```yml
 - hosts: lb
   roles:
     - { role: nginx, when: enable_nginx_lb and load_balancer_is_required }
@@ -186,11 +188,11 @@ loadbalancers.yml file
   
 site.yml file
 
-```
-    - name: Loadbalancers assignment
-       hosts: lb
-         - import_playbook: ../static-assignments/loadbalancers.yml
-        when: load_balancer_is_required 
+```yml
+- name: Loadbalancers assignment
+  hosts: lb
+   - import_playbook: ../static-assignments/loadbalancers.yml
+  when: load_balancer_is_required 
 ```
   
 Now you can make use of `env-vars\uat.yml` file to define which loadbalancer to use in UAT environment by setting respective environmental variable to true.
@@ -201,11 +203,10 @@ enable_nginx_lb: true
 load_balancer_is_required: true
 ```
   
-![ansible i 1](https://user-images.githubusercontent.com/110903886/221914166-5c8c4f43-d6da-48b7-8870-6aa784b9de82.png)
+![Alt text](images/image-1.png)
 
-![ansible i 3](https://user-images.githubusercontent.com/110903886/221917483-85f8acae-7273-4956-a08c-6562fa0cb82d.png)
+![Alt text](images/image-2.png)
 
-![ansible i 2](https://user-images.githubusercontent.com/110903886/221914206-78d59c4d-0db3-454f-bda8-238ed62c2c06.png)
 
 
 The same must work with apache LB, so you can switch it by setting respective environmental variable to true and other to false.
