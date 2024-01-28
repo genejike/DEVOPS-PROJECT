@@ -581,16 +581,20 @@ Install Axios
 npm install axios
 Sip a coffee, click on the next button and let finish this up.
 
-FRONTEND CREATION (CONTINUED)
-Go to ‘components’ directory
+####FRONTEND CREATION (CONTINUED)
+
+- Go to ‘components’ directory
+```sh
 cd src/components
-After that open your ListTodo.js
+```
+- After that open your ListTodo.js
+```sh
 vi ListTodo.js
-in the ListTodo.js copy and paste the following code
+```
+- in the ListTodo.js copy and paste the following code
+```js
 import React from 'react';
- 
 const ListTodo = ({ todos, deleteTodo }) => {
- 
 return (
 <ul>
 {
@@ -611,9 +615,12 @@ return (
 </ul>
 )
 }
- 
-export default ListTodo
+export default ListTodo;
+```
+
 Then in your Todo.js file you write the following code
+
+```js
 import React, {Component} from 'react';
 import axios from 'axios';
  
@@ -669,7 +676,7 @@ deleteTodo = (id) => {
     }
  
     export default Todo;
-
+```
 We need to make little adjustment to our react code. Delete the logo and adjust our App.js to look like this.
 
 Move to the src folder
@@ -681,7 +688,7 @@ Make sure that you are in the src folder and run
 `vi App.js`
 
 Copy and paste the code below into it
-
+```js
     import React from 'react';
  
     import Todo from './components/Todo';
@@ -696,7 +703,7 @@ Copy and paste the code below into it
     }
  
     export default App;
-
+```
 After pasting, exit the editor.
 
 In the src directory open the App.css
@@ -704,7 +711,7 @@ In the src directory open the App.css
 `vi App.css`
 
 Then paste the following code into App.css:
-
+```css
     .App {
     text-align: center;
     font-size: calc(10px + 2vmin);
@@ -792,6 +799,7 @@ Then paste the following code into App.css:
     margin-top: 0;
     }
     }
+```
     Exit
 
 In the src directory open the index.css
@@ -799,7 +807,7 @@ In the src directory open the index.css
 `vim index.css`
 
 Copy and paste the code below:
-
+```cs
     body {
     margin: 0;
     padding: 0;
@@ -817,7 +825,7 @@ Copy and paste the code below:
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
     }
-
+```
 Go to the Todo directory
 
 `cd ../..`
