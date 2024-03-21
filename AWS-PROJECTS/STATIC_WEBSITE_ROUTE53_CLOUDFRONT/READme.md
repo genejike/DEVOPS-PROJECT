@@ -4,7 +4,7 @@
 * click on create bucket 
     * fill in your bucket name and preferred region
 * click on create bucket 
-![alt text](image.png)
+![alt text](images/image.png)
 
 * upload files to s3 bucket 
 
