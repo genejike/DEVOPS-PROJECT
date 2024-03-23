@@ -59,6 +59,13 @@ curl http://localhost:80
 curl -s http://169.254.169.254/latest/meta-data/public-ipv4
 ```
 ![Alt text](images/Public-ipv4.PNG)
+
+- This will not work anymore due to aws new security policies read on Metadata and IMDV2.This is the new waw to retrieve your Public IP address
+```
+TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` 
+curl -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/latest/meta-data/public-ipv4
+
+``
 - Paste url on browser
 ```
 http://<Public-IP-Address>:80
