@@ -229,7 +229,7 @@ sudo chown -R $USER:$USER /var/www/projectLEMP
 
 - Then, open a new configuration file in Nginx’s sites-available directory using your preferred command-line editor.
  ```
-sudo nano /etc/nginx/sites-available/projectLEMP
+sudo vi /etc/nginx/sites-available/projectLEMP
 ```
 
  - This will create a new blank file. Paste in the following bare-bones configuration
@@ -312,7 +312,9 @@ sudo systemctl reload nginx
 ```
 
 ```
-sudo echo 'Hello LEMP from hostname' $(curl -s http://169.254.169.254/latest/meta-data/public-hostname) 'with public IP' $(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) > /var/www/projectLEMP/index.html
+sudo echo 'Hello LEMP from hostname' $(TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` 
+curl -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/latest/meta-data/public-hostname) 'with public IP' $(TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` 
+curl -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/latest/meta-data/public-ipv4) > /var/www/projectLEMP/index.html
 ```
 
  - open your website URL using IP address:
