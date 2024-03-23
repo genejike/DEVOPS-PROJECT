@@ -83,11 +83,13 @@ Trust relationship policy for EC2:-
 }
 ```
 ![alt text](image.png)
-#### source:
+#### Resources:
 
 [CREATING EC2 INSTANCE PROFILE](https://stackoverflow.com/questions/30790666/error-with-not-existing-instance-profile-while-trying-to-get-a-django-project-ru/76620598#76620598)
+
 [HANDS-ON MENTORSHIP BY CHISOM JUDE](https://github.com/genejike/Hands-on-Devops-Project/blob/master/Project-02/02%20-%20AWS/buildonaws.md)
 
-[elasticbeanstalk implementation on youtube ](https://www.youtube.com/watch?v=3h7PMHnilkM)
+[ELASTIC BEANSTALK IMPLEMENTATION ON YOUTUBE  ](https://www.youtube.com/watch?v=3h7PMHnilkM)
 
-[aws documentation](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/GettingStarted.CreateApp.html)
+[AWS DOCUMENTATION](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/GettingStarted.CreateApp.html)
+[Deploy Node JS application on AWS Elastic Beanstalk by chirag mehta](https://medium.com/@chiragmehta900/deploy-node-js-application-on-aws-elastic-beanstalk-dec0d420955a#:~:text=The%20first%20step%20is%20to,a%20name%20to%20your%20app.&text=Choose%20Managed%20platform%20in%20%22Platform%20type%22%2C%20and%20Node.)
