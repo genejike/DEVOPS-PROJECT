@@ -24,6 +24,7 @@ to ensure that its connecting to the  correct backend url
 - install nginx
 - cd /etc/nginx/sites-available/
 - create a folder and paste and edit accordinly
+
 ```
 server {
     listen 80;
@@ -58,12 +59,30 @@ server {
     }
 }
 
-
-
 ```
-
+```
 -sudo ln -s /etc/nginx/sites-available/venioe /etc/nginx/sites-enabled/
-go back to your frontend folder and run 
+```
+go back to your frontend folder and run
+```
 - sudo cp -r build/* /var/www/html
 or
-- sudo cp -r vite/* /var/www/html  if your using vite 
+- sudo cp -r dist/* /var/www/html  ##if your using vite 
+```
+
+for the backend configuration
+
+cd into backend folder
+- run composer install
+```
+sudo yum install -y epel-release
+sudo yum install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+sudo yum module enable -y php:remi-8.2
+sudo yum install -y php-fpm php-mysql php-curl
+
+```
+run sudo vi .env and input your variables
+create your rds instance and connect it to your ec2 machine
+add you .env files
+in your backend folder
+
