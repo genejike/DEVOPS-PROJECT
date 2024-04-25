@@ -18,6 +18,8 @@ sudo apt-get install -y nodejs
 - install vite if your using vite to install it globally 
 ```
    sudo npm install -g vite
+   npm install vite --save-dev
+
 ```
 check you /src/utils/apicontant.js file
 to ensure that its connecting to the  correct backend url
@@ -83,11 +85,7 @@ cd into backend folder
 
 - run composer install
 ```
-sudo apt-get install -y epel-release
-sudo apt-get install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm
-sudo apt-get module enable -y php:remi-8.2
-sudo apt-get install -y  php-curl
-sudo apt install php8.2 php8.2-mysql php8.2-fpm php8.2-xml php8.2-gd php8.2-opcache php8.2-mbstring
+visit official composer website download section
 
 
 ```
