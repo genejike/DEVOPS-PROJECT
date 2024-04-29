@@ -1,16 +1,17 @@
-### Hosting  a laravel and react application an aws ec2 
+### Hosting  a laravel and react application an 2 aws ec2 instances
+#### frontend -react 
 - create an amazon ec2 and amazon rds and configure them 
 - copy your already existing code for the application into the instance
-- download the file from git 
+- Download the file from git 
 - on your local instance run
   ```sh
   scp -i example.pem -r folder/* ubuntu@ipaddress:/home/ubuntu/
   ```
 - or use git to transfer the files
 - 
-cd into the frontend folder and
+cd into the frontend folder and run 
 ```
-run npm install
+npm install
 or
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash -
 sudo apt-get install -y nodejs
@@ -21,18 +22,22 @@ sudo apt-get install -y nodejs
    npm install vite --save-dev
 
 ```
-check you /src/utils/apicontant.js file
-to ensure that its connecting to the  correct backend url
+- check you /src/utils/apicontant.js file
+to ensure that its connecting to the correct backend url
+
 ```
 cd ~
 npm run build
 ```
+
 - install nginx
--
+```
+sudo apt install nginx 
+```
 ```
   cd /etc/nginx/sites-available/
 ```
-- create a folder and paste and edit accordinly
+- create a folder  eg example and paste and edit accordingly
 
 ```
 server {
@@ -68,29 +73,53 @@ server {
     }
 }
 ```
+- create a systemlink 
 ```
 sudo ln -s /etc/nginx/sites-available/your_config_file /etc/nginx/sites-enabled/
 
 ```
-- cd frontend folder/ and run
+- cd  into frontend folder/ and run
 ```
 - sudo cp -r build/* /var/www/html
 or
 - sudo cp -r dist/* /var/www/html  ##if your using vite 
 ```
 
-###  Backend configuration
+####  Backend configuration
 
-cd into backend folder
-
-- run composer install
+ on your second instance input your backend folder
+-install php and its dependencies 
 ```
-visit official composer website download section
+sudo apt update
+sudo add-apt-repository ppa:ondrej/php
+sudo apt update
+sudo apt install php8.3-cli php8.2-common php8.3-mysql php8.3-zip php8.3-gd php8.3-mbstring php8.3-curl php8.3-xml php8.3-bcmath php8.3-fpm
+sudo apt install php8.3-dom
+sudo apt install php8.3-xml
+sudo apt install php8.3-curl
+sudo apt install php8.3-mysql
+sudo apt install php-mbstring
+sudo systemctl restart php8.3-fpm
 
+```
+
+```
+
+## visit official composer website download section
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+
+```
+curl -sS https://getcomposer.org/installer -o composer-setup.php
+sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+```
 
 ```
 - run sudo vi .env and configure your input variables
-
+- or cp .env.example .env 
 - create your rds instance and connect it to your ec2 machine
   
 - add you .env files
@@ -169,15 +198,61 @@ VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 ```
 composer update
 composer upgrade
-php artisan optimize
 
+php artisan optimize
+php artisan migrate
+php artisan passport:keys
 php artisan passport:install
 
-php artisan serve --hosts=ipaddress 
+ 
 ```
+- install nginx and configure your nginx.conf default file
+  ```
+  server {
+      listen 80;
+      server_name localhost;
+      root /var/www/html/demo/public;
+
+      add_header X-Frame-Options "SAMEORIGIN";
+      add_header X-Content-Type-Options "nosniff";
+
+      index index.php;
+
+      charset utf-8;
+
+      location / {
+             try_files $uri $uri/ /index.php?$query_string;
+      }
+
+       location = /favicon.ico { access_log off; log_not_found off; }
+       location = /robots.txt  { access_log off; log_not_found off; }
+
+       error_page 404 /index.php;
+
+       location ~ \.php$ {
+            fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+            fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+            include fastcgi_params;
+        }
+
+       location ~ /\.(?!well-known).* {
+          deny all;
+       }
+  }
+  ```
+```
+cp -r api /var/www/html
+cd api
+sudo systemctl restart nginx
+chmod -R 775 /var/www/html/api/storage
+chown -R www-data:www-data /var/www/html/api/storage
+```
+- test your website
+
 
 Resources
 - [chatgpt conversations ](https://chat.openai.com/share/1f88dfe8-1e7e-4d44-8394-f1c0e159885c)
 - [Deploying a React Application with Nginx on Ubuntu ](https://www.youtube.com/watch?v=WKfmhgYQlCM )
 - [How to deploy a Laravel application on Amazon EC2](https://www.youtube.com/watch?v=flQ-KtaV6HU&t=1304s)
 - [Deploy laravel app to aws with database rds ](https://www.youtube.com/watch?v=OTVocNuqFT8&t=18s)
+- https://www.bacancytechnology.com/blog/deploy-laravel-application-on-aws-ec2#technical-stack:-deploy-laravel-application-on-aws-ec2
