@@ -54,7 +54,13 @@ server {
     charset utf-8;
  
     location / {
-        try_files $uri $uri/ /index.php?$query_string;
+
+                root /var/www/html/dist;
+                index index.html;
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri /index.html$is_args$args =404;
+        
     }
  
     location = /favicon.ico { access_log off; log_not_found off; }
@@ -248,6 +254,9 @@ chmod -R 775 /var/www/html/api/storage
 chown -R www-data:www-data /var/www/html/api/storage
 ```
 - test your website
+
+inorder to forward the port to port 443 
+use certbot on nginx for testing purposes 
 
 
 Resources
