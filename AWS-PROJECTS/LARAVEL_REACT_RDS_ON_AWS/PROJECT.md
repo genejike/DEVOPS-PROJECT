@@ -251,10 +251,10 @@ php artisan passport:install
 cp -r api /var/www/html
 cd api
 sudo systemctl restart nginx
-sudo chown www-data /home/ubuntu
-sudo chown www-data /home/ubuntu/Venioe/api/storage/logs
 chmod -R 775 /var/www/html/api/storage
 chown -R www-data:www-data /var/www/html/api/storage
+sudo chown www-data /home/ubuntu/Venioe/api/storage/logs
+
 sudo chown www-data:www-data /home/ubuntu/Venioe/api/storage/logs/laravel.log
 sudo chown -R www-data:www-data /home/ubuntu/Venioe/api/storage/framework/sessions
 sudo chown -R www-data:www-data /home/ubuntu/Venioe/api/storage/framework/views
