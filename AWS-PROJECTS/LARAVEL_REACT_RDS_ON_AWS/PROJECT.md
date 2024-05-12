@@ -118,10 +118,10 @@ php composer-setup.php
 php -r "unlink('composer-setup.php');"
 
 ```
-curl -sS https://getcomposer.org/installer -o composer-setup.php
-sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 ```
+curl -sS https://getcomposer.org/installer -o composer-setup.php
+sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 ```
 - run sudo vi .env and configure your input variables
@@ -206,6 +206,7 @@ composer update
 composer upgrade
 
 php artisan optimize
+ php artisan db:seed
 php artisan migrate
 php artisan passport:keys
 php artisan passport:install
