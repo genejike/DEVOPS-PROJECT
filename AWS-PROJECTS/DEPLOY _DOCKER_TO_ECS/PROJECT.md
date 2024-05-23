@@ -1,11 +1,16 @@
 ## DEPLOY DOCKER CONTAINERS ON ECS FROM YOUR LOCAL REPOSITORY 
 
-1. Build and Ship a Compose application
-
-   - Deploy the file locally on a Docker engine
-   ```
-     docker compose up -d
-   ```
+1. Build and Ship a docker application
+- create your docker files 
+2.login to aws and create ecr repositories
+- one for frontend and one for backend
+3.navaigate to ecs
+- create a cluster
+- create your task definitions one for frontend and backend
+4. push your docker images to ecr
+- select the ecr repository you ant to push to and click on view push commands
+- follow the commands to build and push your images to ecr
+- 
      
 
 
