@@ -300,6 +300,7 @@ GRANT ALL PRIVILEGES ON tooling.* TO 'webaccess'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 ```
 <img width="482" alt="change on tooling" src="https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/1c3f61ce-a7e7-4a76-a731-34a612e09af3">
+
 ```sh
 sudo systemctl restart mysql
 ```
