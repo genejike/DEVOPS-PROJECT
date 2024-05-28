@@ -439,8 +439,13 @@ id be using 0.0.0.0 for simplicity but for security reasons limit it
 
 ![image](https://github.com/genejike/DEVOPS-PROJECT/assets/75420964/ad65ca96-b000-4914-8f3f-4a732019ffb1)
 
-confirm if this worked by logining to your database with the username created 
-`sudo mysql -u webaccess4 -p`
+Also check if port 3306 is open on the database server
+
+- confirm if this worked by logining to your database with the username created 
+```
+mysql -h <ip address of the database> -u webaccess -p tooling
+
+```
 
 ```
 use tooling;
@@ -451,9 +456,10 @@ select * from users;
 * click exit 
 * login as the root user 
 * Create in MySQL a new admin user with username: myuser and password: password:
+  
 ```sh
-INSERT INTO ‘users’ (‘id’, ‘username’, ‘password’, ’email’, ‘user_type’, ‘status’) VALUES
--> (1, ‘myuser’, ‘5f4dcc3b5aa765d61d8327deb882cf99’, ‘user@mail.com’, ‘admin’, ‘1’);
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `user_type`, `status`) VALUES
+(1, 'myuser', '5f4dcc3b5aa765d61d8327deb882cf99', 'user@mail.com', 'admin', '1');
 ```
 * Open the website in your browser http://<Web-Server-Public-IP-Address-or-Public-DNS-Name>/index.php and make sure you can login into the website with myuser user.
 
