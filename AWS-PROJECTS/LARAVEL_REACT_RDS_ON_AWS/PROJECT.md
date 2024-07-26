@@ -137,7 +137,8 @@ composer update
 composer upgrade
 
 php artisan optimize
- php artisan db:seed
+php artisan db:seed
+php artisan db:seed --class=RoleSeeder
 php artisan migrate
 php artisan passport:keys
 php artisan passport:install
