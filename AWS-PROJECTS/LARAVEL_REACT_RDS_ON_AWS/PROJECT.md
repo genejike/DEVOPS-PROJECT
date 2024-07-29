@@ -169,7 +169,7 @@ php artisan passport:install
        error_page 404 /index.php;
 
        location ~ \.php$ {
-            fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+            fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
             fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
             include fastcgi_params;
         }
@@ -180,11 +180,11 @@ php artisan passport:install
   }
   ```
 ```
-cp -r api /var/www/html
+cp -r api /var/www/
 cd api
 sudo systemctl restart nginx
-chmod -R 775 /var/www/html/api/storage
-chown -R www-data:www-data /var/www/html/api/storage
+sudo chmod -R 775 /var/www/html/api/storage
+sudo chown -R www-data:www-data /var/www/api/storage
 sudo chown www-data /home/ubuntu/Venioe/api/storage/logs
 
 sudo chown www-data:www-data /home/ubuntu/Venioe/api/storage/logs/laravel.log
