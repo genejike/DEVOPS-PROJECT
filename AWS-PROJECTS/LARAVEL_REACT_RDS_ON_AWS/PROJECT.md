@@ -187,9 +187,9 @@ sudo chmod -R 775 /var/www/html/api/storage
 sudo chown -R www-data:www-data /var/www/api/storage
 sudo chown www-data /home/ubuntu/Venioe/api/storage/logs
 
-sudo chown www-data:www-data /home/ubuntu/Venioe/api/storage/logs/laravel.log
-sudo chown -R www-data:www-data /home/ubuntu/Venioe/api/storage/framework/sessions
-sudo chown -R www-data:www-data /home/ubuntu/Venioe/api/storage/framework/views
+sudo chown www-data:www-data /home/ubuntu/Venioe-backend/api/storage/logs/laravel.log
+sudo chown -R www-data:www-data /home/ubuntu/Venioe-backend/api/storage/framework/sessions
+sudo chown -R www-data:www-data /home/ubuntu/Venioe-backend/api/storage/framework/views
 
 ```
 - test your website
