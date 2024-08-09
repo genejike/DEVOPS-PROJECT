@@ -6,7 +6,6 @@ resource "aws_instance" "intro"{
     instance_type = "t2.micro"
     availability_zone = "us-east-1d"
     key_name = "PBL2"
-    vpc_security_group = ["sg-077db5633179dacad"]
     tags ={
         Name = "terra-instance"
     }
