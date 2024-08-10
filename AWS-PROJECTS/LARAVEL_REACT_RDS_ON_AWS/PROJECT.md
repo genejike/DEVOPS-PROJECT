@@ -136,7 +136,7 @@ php artisan passport:keys
 php artisan passport:install
 ```
 - install nginx and configure your nginx.conf default file
-  ```
+```
   server {
       listen 80;
       server_name localhost;
@@ -148,7 +148,7 @@ php artisan passport:install
       index index.php;
 
       charset utf-8;
-}
+    }
 
        location = /favicon.ico { access_log off; log_not_found off; }
        location = /robots.txt  { access_log off; log_not_found off; }
@@ -164,11 +164,11 @@ php artisan passport:install
        location ~ /\.(?!well-known).* {
           deny all;
        }
-  }
+     }
       location / {
              try_files $uri $uri/ /index.php?$query_string;
       
-  ```
+```
 ```
 cp -r api /var/www/
 cd api
