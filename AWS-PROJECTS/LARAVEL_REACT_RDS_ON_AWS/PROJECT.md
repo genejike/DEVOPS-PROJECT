@@ -37,7 +37,7 @@ sudo apt install nginx
 ```
   cd /etc/nginx/sites-available/
 ```
-- create a folder  eg example and paste and edit accordingly
+- create a file eg example and paste and edit accordingly
 
 ```
 server {
@@ -112,13 +112,6 @@ sudo systemctl restart php8.3-fpm
 ```
 
 ## visit official composer website download section
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-php composer-setup.php
-php -r "unlink('composer-setup.php');"
-
-```
-
 ```
 curl -sS https://getcomposer.org/installer -o composer-setup.php
 sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
@@ -135,15 +128,13 @@ in your backend folder
 ```
 composer update
 composer upgrade
-
 php artisan optimize
+php artisan migrate
 php artisan db:seed
 php artisan db:seed --class=RoleSeeder
-php artisan migrate
+php artisan db:seed --class=PositionsTableSeeder
 php artisan passport:keys
 php artisan passport:install
-
- 
 ```
 - install nginx and configure your nginx.conf default file
   ```
@@ -158,10 +149,7 @@ php artisan passport:install
       index index.php;
 
       charset utf-8;
-
-      location / {
-             try_files $uri $uri/ /index.php?$query_string;
-      }
+}
 
        location = /favicon.ico { access_log off; log_not_found off; }
        location = /robots.txt  { access_log off; log_not_found off; }
@@ -178,6 +166,9 @@ php artisan passport:install
           deny all;
        }
   }
+      location / {
+             try_files $uri $uri/ /index.php?$query_string;
+      
   ```
 ```
 cp -r api /var/www/
