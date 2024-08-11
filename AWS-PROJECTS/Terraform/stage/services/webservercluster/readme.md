@@ -1,4 +1,4 @@
-### Launching a simple web server and a cluster of web servers with terraporm on Aws 
+## Launching a simple web server and a cluster of web servers with terraporm on Aws 
 
 - create an Iam user on aws and generate your access keys 
 - update your .aws/config files with your iam credintials or alternatively you can export the files locally but note that if you close your text editor you will have to run the export command again. you can also use the aws configure to update your configuration file
@@ -6,6 +6,7 @@
 - create a folder and create your main.tf 
 - Head over to [Hashicorp developer docs](https://registry.terraform.io/providers/hashicorp) and select aws as the provider 
 - select the use provider button and paste into your main.tf
+
 ```h
 terraform {
   required_providers {
@@ -22,8 +23,11 @@ provider "aws" {
 }
 ```
 ### [Creating the aws instance resource](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance)
+
 [Creating the aws security group ](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group)
+
 - click the link above to see sample data on creating a simple webserver and edit as required
+
 ```h
 resource "aws_instance" "terraformer"{
     ami = "ami-04a81a99f5ec58529"
@@ -54,9 +58,9 @@ resource "aws_security_group" "terraformer-instance" {
 resource "aws_vpc_security_group_ingress_rule" "terraformer-instance" {
   security_group_id = aws_security_group.terraformer-instance.id
   cidr_ipv4         = "0.0.0.0/0"
-  from_port         = var.server_port
+  from_port         = 8080
   ip_protocol       = "tcp"
-  to_port           = var.server_port
+  to_port           = 8080
 }
 
 
@@ -69,17 +73,24 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
 
 ```
 
-- In your variables.tf file define what port you want to use 
-```t
+
+
+- In your variables.tf file define in 
+```h
 variable "server_port" {
     description ="The port the server will use for http requests"
     type = number 
     default = 8080
 }
 ```
-I set the default to port 8080 so that the prompt wunt be interactive 
-- create the output.tf file so that you can view the output of the public ip address after its created also for sensitive things make sure to set to true if not it will be printed on the console 
-```t
+- Then reference them as var.serverport in the respective places,
+from_port and to_port
+
+- I set the default to port 8080 so that the prompt wunt be interactive 
+
+- Create the output.tf file so that you can view the output of the public ip address after its created also for sensitive things make sure to set to true if not it will be printed on the console 
+
+```h
 output "public_ip" {
     description = "The public ip address of the web server"
     value = aws_instance.terraformer.public_ip
@@ -87,6 +98,7 @@ output "public_ip" {
   
 }
 ```
+## Deploying a cluster of web servers 
 ### Creating an autoscaling group 
 - use the [aws_launch_configuration](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_configuration) instead of the aws_instance you used ealier 
 
@@ -105,7 +117,7 @@ resource "aws_launch_configuration" "terraformer"{
 
 ```
 
--now create the [aws_autoscaling_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/autoscaling_group)
+- Now create the [aws_autoscaling_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/autoscaling_group)
 
 ```t
 resource "aws_autoscaling_group" "terra" {
@@ -118,10 +130,12 @@ resource "aws_autoscaling_group" "terra" {
       propagate_at_launch = true
     }
 }
+
 ```
-Always remember that asg by defaualts deletes the old one and creates its replacement  if you change any parameter in your launch configuration .terraform will always try to replace it 
-therefore set lifecycle settings like create_before_destroy so tf will invert the order it creates it by creating the replacement first and updating any references that was pointing to the old one b4 deleting the old one .
-```t
+- Always remember that asg by defaults deletes the old one and creates its replacement  if you change any parameter in your launch configuration .terraform will always try to replace it 
+- Therefore set lifecycle settings like create_before_destroy so tf will invert the order it creates it by creating the replacement first and updating any references that was pointing to the old one b4 deleting the old one .
+ 
+```h
     lifecycle {
       create_before_destroy = true
     }
@@ -130,7 +144,7 @@ therefore set lifecycle settings like create_before_destroy so tf will invert th
 
 - This helps to reference existing configuration so we can use it 
 eg
-```t
+```h
 data "aws_vpc" "default" {
     default = true
   
@@ -145,7 +159,7 @@ data "aws_subnets" "default" {
 ``` 
 now we can reference it in our aws_autoscaling_group
 
-```t
+```h
 
 resource "aws_security_group" "terraformer-instance" {
   name        = "terraformer-instance"
@@ -159,7 +173,8 @@ resource "aws_security_group" "terraformer-instance" {
 ```
 ### [Creating an Application load balancer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) 
 - configure your load balancer to handle your asg
-```t
+
+```h
 resource "aws_lb" "terraformer" {
     name = "terraform-asg-example"
     load_balancer_type = "application"
@@ -169,10 +184,11 @@ resource "aws_lb" "terraformer" {
 
 ```
 - configure a [listener](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) for the Alb 
-```t
+
+```h
 resource "aws_lb_listener" "http" {
     load_balancer_arn = aws_lb.terraformer.arn
-    port = 80
+    port = var.alb_port 
     protocol = "HTTP"
 # By default to return a simple 404 page 
     default_action {
@@ -190,7 +206,8 @@ resource "aws_lb_listener" "http" {
 ```
 
 - you need to create a specific security group for the alb else it wunt work 
-```t
+
+```h
 resource "aws_security_group" "alb" {
    name = "terraform-example-alb"
   
@@ -210,17 +227,20 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4_for_alb" {
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "-1" # semantically equivalent to all ports
 }
+
 ```
 
 - you also need the aws_alb to actually use this security group 
 - Add the 
-```t
+
+```h
 security_groups = [aws_security_groups.alb.id] to your aws_alb resource
 
 ```
 `
 ### [creating target group for your ASG](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group)
-```t
+
+```h
 resource "aws_lb_target_group" "alb-target" {
   name        = "terraform-asg-example"
   target_type = "instance"
@@ -240,8 +260,9 @@ resource "aws_lb_target_group" "alb-target" {
 }
 ```
 - how does the target group know the ec2 instances to send requests to 
-to do this set the `target_group_arns = aws_lb_target_group.asg.arn ` in the aws_autoscaling_group'
-```t
+to do this set the `target_group_arns = aws_lb_target_group.asg.arn ` in the aws_autoscaling_group
+
+```h
 resource "aws_autoscaling_group" "terra" {
     launch_configuration = aws_launch_configuration.terraformer.name
     target_group_arns = [ aws_lb_target_group.alb-target.arn ]
@@ -262,7 +283,9 @@ resource "aws_autoscaling_group" "terra" {
 - we also set the health_check_type = "ELB" because by default it is EC2.. this asks the ASG to use the target group health check to determine if an instance is healthy
 
 - ### [creating listener rules](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) 
-```t
+
+```h
+
 resource "aws_lb_listener_rule" "asg" {
     listener_arn = aws_lb_listener.http.arn
     priority = 100
@@ -279,8 +302,21 @@ resource "aws_lb_listener_rule" "asg" {
   
 }
 ```
-- create your outpu.tf to display the output file 
-```t
+- In the variable.tf file specify
+
+```h
+variable "alb_port" {
+    description ="The port the server will use for http requests"
+    type = number 
+    default = 80
+}
+  
+```
+- change the port 80 in port section to var.alb_port  
+
+- create your output.tf to display the output file 
+
+```h
 output "alb_dns_name" {
     description = "The domain mane  of the web server"
     value = aws_lb.terraformer.dns_name

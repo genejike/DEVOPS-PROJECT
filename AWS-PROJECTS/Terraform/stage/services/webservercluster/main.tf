@@ -1,14 +1,3 @@
-# terraform {
-#   required_providers {
-#     aws = {
-#       source = "hashicorp/aws"
-#       version = "5.62.0"
-#     }
-#   }
-#}
-provider "aws"{
-    region = "us-east-1"
-}
 resource "aws_launch_configuration" "terraformer"{
     image_id = "ami-04a81a99f5ec58529"
     instance_type = "t2.micro"
@@ -20,30 +9,7 @@ resource "aws_launch_configuration" "terraformer"{
                 EOF
 }
 
-resource "aws_security_group" "terraformer-instance" {
-  name        = "terraformer-instance"
-  description = "Allow terraformer-instance inbound traffic and all outbound traffic"
-  vpc_id = data.aws_vpc.default.id
 
-  tags = {
-    Name = "terraformer-instance"
-  }
-}
-
-resource "aws_vpc_security_group_ingress_rule" "terraformer-instance" {
-  security_group_id = aws_security_group.terraformer-instance.id
-  cidr_ipv4         = "0.0.0.0/0"
-  from_port         = var.server_port
-  ip_protocol       = "tcp"
-  to_port           = var.server_port
-}
-
-
-resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
-  security_group_id = aws_security_group.terraformer-instance.id
-  cidr_ipv4         = "0.0.0.0/0"
-  ip_protocol       = "-1" # semantically equivalent to all ports
-}
 
 resource "aws_autoscaling_group" "terra" {
     launch_configuration = aws_launch_configuration.terraformer.name
@@ -61,16 +27,7 @@ resource "aws_autoscaling_group" "terra" {
       create_before_destroy = true
     }
 }
-data "aws_vpc" "default" {
-    default = true
-  
-}
-data "aws_subnets" "default" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
-  }
-}
+
 resource "aws_lb" "terraformer" {
     name = "terraform-asg-example"
     load_balancer_type = "application"
@@ -81,7 +38,7 @@ resource "aws_lb" "terraformer" {
 
 resource "aws_lb_listener" "http" {
     load_balancer_arn = aws_lb.terraformer.arn
-    port = 80
+    port = var.alb_port
     protocol = "HTTP"
 # By default to return a simple 404 page 
     default_action {
