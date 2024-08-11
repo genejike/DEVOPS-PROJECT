@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket = "terraform-${ }"
+    bucket = "name_of_bucket"
     
   }
 }

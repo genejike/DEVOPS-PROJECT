@@ -127,4 +127,96 @@ output "dynamodb_table_name" {
 - now notice that the s3 bucket and dynamodb tables where created first  with the local backend before the backend configuration was added and terraform init was run again 
 - to delete it you have to remove the backend configuration block rerun teraform init then run terraform destroy 
 - **NOTE** You cant use variable references in backend block it wunt work you have to write manually 
-- 
+- You can reduce the manual input by creating a file named backend.hcl and putting the parameters inside except the `key` parameter that defines where you want to put the files  
+```
+# backend.hcl
+bucket         = "terraform-up-and-running-state"
+region         = "us-east-2"
+dynamodb_table = "terraform-up-and-running-locks"
+encrypt        = true
+``` 
+- so when running your terraform init it will be 
+
+```h
+terraform init -backend-config=backend.hcl
+
+```
+- or use terragrunt
+
+### state File isolation 
+- Isolate state files for dev , stage and prod in a seperate set of configuration 
+2 ways 
+- isolation by workspaces
+- isolation via file layout 
+#### isolation via  workspaces
+
+- create another folder inside this folder and name it ec2 instance 
+- create a main.tf ,provider.tf file
+- terraform workspaces allows to store in multiple seperate named workspaces 
+- the default workspace is what terraform starts with if u dont specify it will use the default 
+- terraform workpace commands help you switch between workspaces 
+in main.tf define the 
+
+```h
+resource "aws_instance" "example" {
+  ami           = "ami-0fb653ca2d3k77g7"
+  instance_type = "t2.micro"
+}
+``` 
+in the providers.tf
+
+```h
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "5.62.0"
+    }
+  }
+ # Replace this with your bucket name!
+  # Replace this with your DynamoDB table name!
+  backend "s3" {
+    key = "workspaces-example/terraform.tfstate"
+    bucket = "b"
+    region = "us-east-1"
+    dynamodb_table = "t"
+    encrypt = true
+    
+    
+  }
+}
+provider "aws" {
+    region = "us-east-1"
+  
+}
+```
+- run `terraform init` and `terraform apply ` 
+- type `terraform workspace show `
+- To create a new workspace  and switch run `teraform workspace new <nameofworkspace>`
+- run `terraform plan` and `terraform apply` it will deploy a total new instance
+- you can create a new workspace to test it again 
+-`terraform workspace list` to see all workspaces 
+- `terraform workspace select <nameofworkspace>` to switch inbetween them 
+- verify this from your s3 bucket
+- tenary syntax to conditionally set workspaces depending on the value 
+```h
+resource "aws_instance" "example" {
+  ami           = "ami-0fb653ca2d3203ac1"
+  instance_type = terraform.workspace == "default" ? "t2.medium" : "t2.micro"
+}
+``` 
+- drawbacks
+* state files in the same backend
+* have to run terraform workspace to see where your at
+* running terraform destroy on a workspace , you can be on production and forget your on production and delete it imagine 
+
+- using folders is better seperate folders for dev staging and prod env
+- seperate components like Vpc , services ,db etc
+
+
+
+
+
+
+
+
