@@ -212,6 +212,7 @@ resource "aws_instance" "example" {
 
 - using folders is better seperate folders for dev staging and prod env
 - seperate components like Vpc , services ,db etc
+![alt text](images/file_structure.jpg)
 
 
 
