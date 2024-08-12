@@ -1,11 +1,8 @@
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "terraform-${random_string.bucket_id.result}"
+  bucket = var.bucket_name
 }
 
-resource "random_string" "bucket_id" {
-  length  = 5
-  special = false
-}
+
 
 ### life-cycle configuration
 resource "aws_s3_bucket_lifecycle_configuration" "bucklifecycle" {

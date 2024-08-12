@@ -6,15 +6,15 @@ terraform {
     }
   }
 
-  backend "s3" {
-    key = "workspaces-example/terraform.tfstate"
-    bucket = "terraform-43d63"
-    region = "us-east-1"
-    dynamodb_table = "terraform-locks"
-    encrypt = true
+  # backend "s3" {
+  #   key = "workspaces-example/terraform.tfstate"
+  #   bucket = "terraform-43d63"
+  #   region = "us-east-1"
+  #   dynamodb_table = "terraform-locks"
+  #   encrypt = true
     
     
-  }
+  # }
 }
 provider "aws" {
     region = "us-east-1"

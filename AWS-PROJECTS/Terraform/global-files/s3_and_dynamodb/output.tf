@@ -13,9 +13,9 @@ output "dynamodb_table_name" {
     description = "dynamodb table"
   
 }
-output "public_ip" {
-    description = "public ipv4 address"
-    value = aws_instance.example.public_ip
-    sensitive = false
+# output "public_ip" {
+#     description = "public ipv4 address"
+#     value = aws_instance.example.public_ip
+#     sensitive = false
   
-}
+# }

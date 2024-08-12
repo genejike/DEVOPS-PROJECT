@@ -8,8 +8,8 @@ terraform {
   backend "s3" {
     key = "stage/services/webserver-cluster/terraform.tfstate"
     region = "us-east-1"
-    dynamodb_table = "value"
-    bucket = "value"
+    bucket = "ketbuc678989797"
+    dynamodb_table = "terraform-locks"
     
   }
 }

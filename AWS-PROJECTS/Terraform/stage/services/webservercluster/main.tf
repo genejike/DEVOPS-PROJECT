@@ -1,12 +1,25 @@
+data "terraform_remote_state" "rdsexample" {
+  backend = "s3"
+
+  config = {
+    bucket = "ketbuc678989797"
+    key    = "stage/data-stores/mysql/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
 resource "aws_launch_configuration" "terraformer"{
     image_id = "ami-04a81a99f5ec58529"
     instance_type = "t2.micro"
     security_groups = [ aws_security_group.terraformer-instance.id ]
-    user_data = <<-EOF
-                #!/bin/bash
-                echo "Hello,world" > index.html
-                nohup busybox httpd -f -p ${var.server_port} &
-                EOF
+    # put the user script in a template file instead of using <<-EOF
+    user_data = templatefile("user_data.sh",{
+      server_port = var.server_port
+      db_address = data.terraform_remote_state.rdsexample.outputs.address
+      db_port = data.terraform_remote_state.rdsexample.outputs.port
+    })
+    lifecycle {
+      create_before_destroy = true
+    }
 }
 
 
