@@ -1,5 +1,5 @@
 module "webservercluster" {
-    source = "../../../modules/services/webservercluster"
+    source = "../../../../modules/services/webservercluster"
   
    cluster_name = "websevers-stage"
    db_remote_state_bucket = "ketbuc678989797"
