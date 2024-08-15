@@ -4,6 +4,7 @@ terraform {
       source = "hashicorp/aws"
       version = "5.62.0"
     }
+    
   }
   backend "s3" {
     key = "stage/services/webserver-cluster/terraform.tfstate"
@@ -12,6 +13,7 @@ terraform {
     dynamodb_table = "terraform-locks"
     
   }
+  
 }
 provider "aws"{
     region = "us-east-1"

@@ -28,6 +28,7 @@ resource "aws_launch_configuration" "terraformer"{
 
 
 resource "aws_autoscaling_group" "terra" {
+    name = var.cluster_name
     launch_configuration = aws_launch_configuration.terraformer.name
     target_group_arns = [ aws_lb_target_group.alb-target.arn ]
     vpc_zone_identifier  = data.aws_subnets.default.ids
@@ -36,7 +37,14 @@ resource "aws_autoscaling_group" "terra" {
     max_size = var.max_size
   # Wait for at least this many instances to pass health checks before
   # considering the ASG deployment complete
-    min_elb_capacity = var.min_size
+    # min_elb_capacity = var.min_size
+    # use instance refresh to roll out changes to the asg
+    instance_refresh {
+      strategy = "Rolling"
+      preferences {
+        min_healthy_percentage = 50
+      }
+    }
     tag {
       key = "Name"
       value = "${var.cluster_name}-alb"
@@ -55,10 +63,18 @@ resource "aws_autoscaling_group" "terra" {
       propagate_at_launch = true
     }
   }
-    lifecycle {
-      create_before_destroy = true
-    }
+    # lifecycle {
+    #   create_before_destroy = true
+    # }
+    
+    
 }
+# it is  used when you do code refactoring like changing  names of resources so terraform
+ # doesnt delete the old one and create a new one rather it treats it the same and just renames it 
+# moved {
+#   from = aws_instance .terra
+#   to = aws_instance .terraform
+# }
 resource "aws_autoscaling_schedule" "scaling_out_during_business_hours"{
   count = var.enable_autoscaling ? 1 : 0
     autoscaling_group_name = aws_autoscaling_group.terra.name
