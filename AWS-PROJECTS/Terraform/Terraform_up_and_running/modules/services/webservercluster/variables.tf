@@ -36,3 +36,26 @@ variable "max_size" {
     type = number
   
 }
+variable "custom_tags"{
+    description = "custom tags to set on the instances in the asg"
+    type = map(string)
+    default = {}
+  
+}
+variable "enable_autoscaling" {
+    description = "if set to true , enable autoscaling"
+    type = bool
+  
+}
+
+variable "ami" {
+  description = "The AMI to run in the cluster"
+  type        = string
+  default     = "ami-04a81a99f5ec58529"
+}
+
+variable "server_text" {
+  description = "The text the web server should return"
+  type        = string
+  default     = "Hello, World"
+}
