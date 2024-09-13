@@ -120,7 +120,7 @@ sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 - or cp .env.example .env 
 - create your rds instance and connect it to your ec2 machine
   
-- add you .env files
+- add your .env files
 in your backend folder
 
 - run
@@ -132,6 +132,7 @@ php artisan migrate
 php artisan db:seed
 php artisan db:seed --class=RoleSeeder
 php artisan db:seed --class=PositionsTableSeeder
+php artisan db:seed --class=SuperAdminSeeder
 php artisan passport:keys
 php artisan passport:install
 ```
@@ -175,11 +176,11 @@ cd api
 sudo systemctl restart nginx
 sudo chmod -R 775 /var/www/html/api/storage
 sudo chown -R www-data:www-data /var/www/api/storage
-sudo chown www-data /home/ubuntu/Venioe/api/storage/logs
+sudo chown www-data /home/ubuntu/<app-folder>/api/storage/logs
 
-sudo chown www-data:www-data /home/ubuntu/Venioe-backend/api/storage/logs/laravel.log
-sudo chown -R www-data:www-data /home/ubuntu/Venioe-backend/api/storage/framework/sessions
-sudo chown -R www-data:www-data /home/ubuntu/Venioe-backend/api/storage/framework/views
+sudo chown www-data:www-data /home/ubuntu/<app-folder>/api/storage/logs/laravel.log
+sudo chown -R www-data:www-data /home/ubuntu/<app-folder>/api/storage/framework/sessions
+sudo chown -R www-data:www-data /home/ubuntu/<app-folder>/api/storage/framework/views
 
 ```
 - test your website
