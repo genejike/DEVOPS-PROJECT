@@ -44,12 +44,12 @@ server {
     listen 80;
     listen [::]:80;
     server_name example.com;
-    root /srv/example.com/public;
+    root /var/www/html/dist;
  
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-Content-Type-Options "nosniff";
  
-    index index.php;
+    index index.html;
  
     charset utf-8;
  
