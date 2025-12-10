@@ -1,3 +1,16 @@
+### Add the IP-BLOCKING server block
+### This MUST be the FIRST server block in the file:
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    server_name _;
+
+    return 444;
+}
+
+
 server {
     listen 80;
     server_name example.com;  # replace with your domain
